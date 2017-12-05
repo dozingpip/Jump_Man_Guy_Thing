@@ -4,22 +4,23 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 
-public class Body extends PApplet implements ApplicationConstants{
+public class Body extends GraphicObject{
 	private ArrayList<Limb> limbs;
 	private Torso torso;
 	private float moveIncrement = 1f;
 	private int numLimbs;
 	int limbJoints;
 	private float t, x, y, a;
-	float startArm = PI/4;
+	float startArm = PApplet.PI/4;
 	private ArrayList<KeyFrame> keys;
 	boolean reachedLastFrame;
+	AnimState state;
+	ArrayList<KeyFrame> idleAnim, walkAnim, jumpAnim, hurtAnim, dyingAnim;
 	
-	public Body(ArrayList<KeyFrame> keys_, int numLimbs_, int limbJoints_) {
+	public Body(int numLimbs_, int limbJoints_) {
 		numLimbs = numLimbs_;
 		limbJoints = limbJoints_;
 		t = 0;
-		keys = keys_;
 		reachedLastFrame = false;
 		// initial state: first currentFrame
 		KeyFrame start = keys.get(0);
@@ -30,20 +31,20 @@ public class Body extends PApplet implements ApplicationConstants{
 		limbs = new ArrayList<Limb>();
 		
 		for( int i = 0; i<numLimbs; i++)
-			limbs.add(new Limb(start.getLimbsJoints().get(i), cos(i*2*PI/numLimbs), sin(i*2*PI/numLimbs)));
+			limbs.add(new Limb(start.getLimbsJoints().get(i), PApplet.cos(i*2*PApplet.PI/numLimbs), PApplet.sin(i*2*PApplet.PI/numLimbs)));
 		
 		torso = new Torso(3f);
 		
 	}
 	
-	public void draw(PApplet sketch) {
-		sketch.pushMatrix();
-		sketch.translate(x, y);
-		sketch.rotate(a);
+	public void draw() {
+		app_.pushMatrix();
+		app_.translate(x, y);
+		app_.rotate(a);
 		for(int i = 0; i<numLimbs; i++)
-			limbs.get(i).draw(sketch);
+			limbs.get(i).draw();
 		torso.draw();
-		sketch.popMatrix();
+		app_.popMatrix();
 	}
 	
 	public void update(float dt)
@@ -150,10 +151,6 @@ public class Body extends PApplet implements ApplicationConstants{
 		return limbs;
 	}
 	
-	public void hit() {
-		torso.rollEyes();
-	}
-	
 	/**
 	 * For easier access of all the limbs' joint angles all in one spot (mostly for packaging
 	 * it up to output to a file)
@@ -183,4 +180,6 @@ public class Body extends PApplet implements ApplicationConstants{
 		t= 0;
 		reachedLastFrame = false;
 	}
+	
+	
 }

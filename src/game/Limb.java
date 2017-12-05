@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 
-public class Limb extends PApplet implements ApplicationConstants{
+public class Limb extends GraphicObject{
 	public final static int JOINT_COLOR = 0xF6784200;
 	public final static int LINK_COLOR = 0x00000000;
 	public final static float JOINT_RADIUS = 0.6f;
@@ -29,23 +29,23 @@ public class Limb extends PApplet implements ApplicationConstants{
 		y = y_;
 	}
 	
-	public void draw(PApplet sketch) {
-		sketch.pushMatrix();
+	public void draw() {
+		app_.pushMatrix();
 		//sketch.translate(x,  y);
 		//base joint is first theta.
 		for (int k=0; k<numJoints; k++) 
 		{
-			sketch.rotate(theta.get(k));
-			sketch.noFill();
-			sketch.stroke(LINK_COLOR);
-			sketch.strokeWeight(LINK_THICKNESS);
-			sketch.line(0, 0, 0, H);
-			sketch.translate(0, H);
-			sketch.noStroke();
-			sketch.fill(JOINT_COLOR);
-			sketch.ellipse(0, 0, JOINT_DIAMETER, JOINT_DIAMETER);
+			app_.rotate(theta.get(k));
+			app_.noFill();
+			app_.stroke(LINK_COLOR);
+			app_.strokeWeight(LINK_THICKNESS);
+			app_.line(0, 0, 0, H);
+			app_.translate(0, H);
+			app_.noStroke();
+			app_.fill(JOINT_COLOR);
+			app_.ellipse(0, 0, JOINT_DIAMETER, JOINT_DIAMETER);
 		}
-		sketch.popMatrix();
+		app_.popMatrix();
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class Limb extends PApplet implements ApplicationConstants{
 	 * @param incThetaBy
 	 */
 	public void rotateJoint(int whichJoint, float incThetaBy) {
-		setTheta(whichJoint, (getTheta(whichJoint)+incThetaBy) %(2*PI));
+		setTheta(whichJoint, (getTheta(whichJoint)+incThetaBy) %(2*PApplet.PI));
 	}
 	
 	public float getTheta(int index) {
