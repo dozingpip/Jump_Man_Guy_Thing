@@ -15,6 +15,18 @@ public class Main extends PApplet implements ApplicationConstants{
 	ArrayList<KeyFrame> keyframes;
 	int currentEditingFrame = 1;
 	
+	public void settings() 
+	{
+		size(WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+
+	public void setup() 
+	{
+		setupGraphicClasses_();
+		lastTime = millis();
+		player = new Player();
+	}
+	
 	public void draw() 
 	{	
 		frame++;
@@ -30,6 +42,8 @@ public class Main extends PApplet implements ApplicationConstants{
 	 		// horizontal line for the "ground"
 			stroke(0);
 			line(WORLD_X_MIN, 0, WORLD_X_MAX, 0);
+			
+			player.draw();
 			
 			
 			popMatrix();
@@ -53,5 +67,20 @@ public class Main extends PApplet implements ApplicationConstants{
 
 		lastTime = t;
 		
+	}
+	
+	public void setupGraphicClasses_()
+	{
+		if (GraphicObject.setup(this) != 1)
+		{
+			println("A graphic classe\'s setup() method was called illegally before this class");
+			System.exit(-1);
+		}
+	}
+	
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+		PApplet.main("game.Main");
 	}
 }

@@ -24,6 +24,13 @@ public class KeyFrame {
 		limbs = limbs_;
 	}
 	
+	public KeyFrame(int t_, float x_, float y_, float a_) {
+		t = t_;
+		x = x_;
+		y = y_;
+		a = a_;
+	}
+	
 	public int getT() {
 		return t;
 	}
@@ -68,21 +75,17 @@ public class KeyFrame {
 	 */
 	public String keyFrameOut() {
 		String out = ""+t+"," + x + ","+ y +","+ a;
-		out+=",(";
+		out+="\n";
 		for(int i = 0; i<limbs.size(); i++) {
-			if(i == 0) out+="("; else out+=";(";
 			ArrayList<Float> jointAngles = limbs.get(i);
 			for(int j = 0; j<jointAngles.size(); j++) {
 				out+=""+jointAngles.get(j);
 				if(j != jointAngles.size()-1) {
-					out+="_";
+					out+=",";
 				}
 			}
-			out+=")";
+			out+="\n";
 		}
-		
-		out+=")";
-		
 		return out;
 	}
 }

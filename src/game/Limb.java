@@ -23,16 +23,13 @@ public class Limb extends GraphicObject{
 	 * @param jointAngles
 	 */
 	public Limb(ArrayList<Float> jointAngles, float x_, float y_) {
+		super(x_, y_, 0);
 		theta = jointAngles;
 		numJoints = theta.size();
-		x = x_;
-		y = y_;
 	}
 	
 	public void draw() {
 		app_.pushMatrix();
-		//sketch.translate(x,  y);
-		//base joint is first theta.
 		for (int k=0; k<numJoints; k++) 
 		{
 			app_.rotate(theta.get(k));

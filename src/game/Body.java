@@ -15,14 +15,18 @@ public class Body extends GraphicObject{
 	private ArrayList<KeyFrame> keys;
 	boolean reachedLastFrame;
 	AnimState state;
-	ArrayList<KeyFrame> idleAnim, walkAnim, jumpAnim, hurtAnim, dyingAnim;
+	Animations anims;
 	
-	public Body(int numLimbs_, int limbJoints_) {
+	public Body(int numLimbs_, int limbJoints_, String animFile) {
+		//this doesn't work yet for some reason, I keep getting a NoSuchFileException
+		// no matter where I put the file and I am changing the path here according to those
+		// changes.
+		anims = new Animations("Animations/"+animFile);
 		numLimbs = numLimbs_;
 		limbJoints = limbJoints_;
 		t = 0;
 		reachedLastFrame = false;
-		// initial state: first currentFrame
+		setState(AnimState.IDLE);
 		KeyFrame start = keys.get(0);
 		x = start.getX();
 		y = start.getY();
@@ -35,6 +39,28 @@ public class Body extends GraphicObject{
 		
 		torso = new Torso(3f);
 		
+	}
+	
+	public void setState(AnimState state_) {
+		state = state_;
+		keys = getStateAnim();
+	}
+	
+	public ArrayList<KeyFrame> getStateAnim(){
+		switch(state) {
+			case IDLE:
+				return anims.getIdle();
+			case WALK:
+				return anims.getWalk();
+			case JUMP:
+				return anims.getJump();
+			case HURT:
+				return anims.getHurt();
+			case DYING:
+				return anims.getDying();
+			default:
+				return null;
+		}
 	}
 	
 	public void draw() {
@@ -101,19 +127,6 @@ public class Body extends GraphicObject{
 		
 	}
 	
-	/**
-	 * Sets the body to the position at the frame selected.
-	 * @param frame Which frame to jump to.
-	 */
-	public void jumpTo(int frame) {
-		x = keys.get(frame).getX();
-		y = keys.get(frame).getY();
-		a = keys.get(frame).getA();
-		for(int i = 0; i<numLimbs; i++)
-			for(int j = 0; j<limbJoints; j++)
-				limbs.get(i).setTheta(j, keys.get(frame).getLimbsJoints().get(i).get(j));
-	}
-	
 	public float getX() {
 		return x;
 	}
@@ -170,15 +183,6 @@ public class Body extends GraphicObject{
 	
 	public boolean isAnimDone() {
 		return reachedLastFrame;
-	}
-	
-	public void restartAnim() {
-		KeyFrame start = keys.get(0);
-		x = start.getX();
-		y = start.getY();
-		a = start.getA();
-		t= 0;
-		reachedLastFrame = false;
 	}
 	
 	
