@@ -1,4 +1,4 @@
-package game;
+package animationEditor;
 
 import java.util.ArrayList;
 
@@ -43,6 +43,7 @@ public class KeyFrame {
 		return y;
 	}
 	
+
 	public float getA() {
 		return a;
 	}
