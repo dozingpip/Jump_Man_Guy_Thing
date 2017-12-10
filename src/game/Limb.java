@@ -30,6 +30,7 @@ public class Limb extends GraphicObject{
 	
 	public void draw() {
 		app_.pushMatrix();
+		app_.translate(x, y);
 		for (int k=0; k<numJoints; k++) 
 		{
 			app_.rotate(theta.get(k));

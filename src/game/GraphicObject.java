@@ -98,7 +98,7 @@ public abstract class GraphicObject implements ApplicationConstants{
 	}
 
 
-	protected static int setup(PApplet theApp)
+	public static int setup(PApplet theApp)
 	{
 		if (appSetCounter_ == 0) 
 		{

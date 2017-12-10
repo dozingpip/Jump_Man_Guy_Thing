@@ -3,12 +3,12 @@ package game;
 public class Player {
 	Body body;
 	float x, y;
-	int health;
+	int health = 5;
 	String playerAnimFile = "player.txt";
 	
 	
 	public Player() {
-		body = new Body(4, 2, playerAnimFile);
+		body = new Body(playerAnimFile, 4, 2);
 	}
 	
 	public void draw() {
@@ -28,6 +28,27 @@ public class Player {
 	
 	public void die() {
 		
+	}
+	
+	public boolean isAlive() {
+		return health>0;
+	}
+	
+	public void move(char k) {
+		switch(k) {
+			case 'w':
+				body.jump();
+				break;
+			case 'a':
+				body.moveLeft();
+				break;
+			case 'd':
+				body.moveRight();
+				break;
+		}
+	}
+	public void update(float dt) {
+		body.update(dt);
 	}
 
 }

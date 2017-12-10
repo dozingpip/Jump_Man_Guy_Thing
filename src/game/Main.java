@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 
+import animationEditor.KeyFrame;
 import processing.core.PApplet;
 
 public class Main extends PApplet implements ApplicationConstants{
@@ -11,6 +12,7 @@ public class Main extends PApplet implements ApplicationConstants{
 	private final float ANGLE_INCR = PI/16;
 	private boolean animate = false;
 	private float lastTime;
+	private float animStart;
 	private long frame = 0L;
 	ArrayList<KeyFrame> keyframes;
 	int currentEditingFrame = 1;
@@ -49,7 +51,7 @@ public class Main extends PApplet implements ApplicationConstants{
 			popMatrix();
 		}
 		
-		float t = millis();
+		float t = millis()-animStart;
 		
 		if (animate)
 		{
@@ -57,16 +59,25 @@ public class Main extends PApplet implements ApplicationConstants{
 			//	time in seconds since last update: (t-lastTime_)*0.001f
 			float dt = (t-lastTime)*0.001f;
 			
-			/*if(!body.isAnimDone()) {
-				body.update(dt);
+			if(player.isAlive()) {
+				player.update(dt);
 			}else {
 				animate = false;
 				println("Animation complete.");
-			}*/
+			}
 		}
 
 		lastTime = t;
 		
+	}
+	
+	public void keyPressed() {
+		switch(key) {
+			case 'w': case 'd': case 'a': 
+				animStart = millis();
+				player.move(key);
+				break;
+		}
 	}
 	
 	public void setupGraphicClasses_()

@@ -1,7 +1,9 @@
 package game;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import animationEditor.KeyFrame;
 import processing.core.PApplet;
 
 public class Body extends GraphicObject{
@@ -17,27 +19,46 @@ public class Body extends GraphicObject{
 	AnimState state;
 	Animations anims;
 	
-	public Body(int numLimbs_, int limbJoints_, String animFile) {
-		//this doesn't work yet for some reason, I keep getting a NoSuchFileException
-		// no matter where I put the file and I am changing the path here according to those
-		// changes.
-		anims = new Animations("Animations/"+animFile);
+	public Body(String animFile, int numLimbs_, int limbJoints_) {
 		numLimbs = numLimbs_;
 		limbJoints = limbJoints_;
+		KeyFrame start;
+		try {
+			anims = new Animations(animFile);
+			if(anims.getNumLimbs()!=numLimbs || anims.getNumJoints()!=limbJoints) {
+				System.out.println("The limb/ joints numbers in the animation file and body set here differ./n"
+						+ "body: limbs = "+ numLimbs+", anim file: limbs = "+ anims.getNumLimbs()+"/n"
+						+ "body: joints = "+ limbJoints+", anim file: joints = "+ anims.getNumJoints());
+			}
+			setState(AnimState.IDLE);
+			start = keys.get(0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Failed opening specified file, so using default file.");
+			keys = new ArrayList<KeyFrame>();
+			ArrayList<ArrayList<Float>> limbAngles = new ArrayList<>();
+			for(int i = 0; i<numLimbs; i++) {
+				ArrayList<Float> startJointPos = new ArrayList<Float>();
+				startJointPos.add(0f);
+				startJointPos.add(i*2*PApplet.PI/numLimbs);
+				for(int j = 0; j<limbJoints-1; j++)
+					startJointPos.add(0f);
+				limbAngles.add(startJointPos);
+			}
+			start = new KeyFrame(0, 0, 0, 0, limbAngles);
+			keys.add(start);
+		}
 		t = 0;
 		reachedLastFrame = false;
-		setState(AnimState.IDLE);
-		KeyFrame start = keys.get(0);
-		x = start.getX();
-		y = start.getY();
-		a = start.getA();
 
 		limbs = new ArrayList<Limb>();
+		for( int i = 0; i<numLimbs; i++) {
+			limbs.add(new Limb(start.getLimbsJoints().get(i), 0, 0));
+			//limbs.add(new Limb(start.getLimbsJoints().get(i), PApplet.cos(i*2*PApplet.PI/numLimbs), PApplet.sin(i*2*PApplet.PI/numLimbs)));
+		}
+		jumpTo(0);
 		
-		for( int i = 0; i<numLimbs; i++)
-			limbs.add(new Limb(start.getLimbsJoints().get(i), PApplet.cos(i*2*PApplet.PI/numLimbs), PApplet.sin(i*2*PApplet.PI/numLimbs)));
-		
-		torso = new Torso(3f);
+		torso = new Torso(6f);
 		
 	}
 	
@@ -67,6 +88,7 @@ public class Body extends GraphicObject{
 		app_.pushMatrix();
 		app_.translate(x, y);
 		app_.rotate(a);
+		
 		for(int i = 0; i<numLimbs; i++)
 			limbs.get(i).draw();
 		torso.draw();
@@ -123,8 +145,26 @@ public class Body extends GraphicObject{
 					limbs.get(i).setTheta(j, keys.get(keys.size()-
 											 1).getLimbsJoints().get(i).get(j));
 			reachedLastFrame = true;
+			//if the animation is not the idle one, stop playing when done.  If it is the idle animation, just restart it.
+			if(state!=AnimState.IDLE)
+				setState(AnimState.IDLE);
+			else
+				t = 0;
 		}
 		
+	}
+	
+	/**
+	 * Sets the body to the position at the frame selected.
+	 * @param frame Which frame to jump to.
+	 */
+	public void jumpTo(int frame) {
+		x = keys.get(frame).getX();
+		y = keys.get(frame).getY();
+		a = keys.get(frame).getA();
+		for(int i = 0; i<numLimbs; i++)
+			for(int j = 0; j<limbJoints; j++)
+				limbs.get(i).setTheta(j, keys.get(frame).getLimbsJoints().get(i).get(j));
 	}
 	
 	public float getX() {
@@ -139,16 +179,25 @@ public class Body extends GraphicObject{
 		return a;
 	}
 	
+
+	public void jump() {
+		setState(AnimState.JUMP);
+	}
+	
 	public void moveUp() {
 		y+=moveIncrement;
 	}
+	
 	public void moveDown() {
 		y-=moveIncrement;
 	}
+	
 	public void moveLeft() {
+		setState(AnimState.WALK);
 		x-=moveIncrement;
 	}
 	public void moveRight() {
+		setState(AnimState.WALK);
 		x+=moveIncrement;
 	}
 	
@@ -160,8 +209,16 @@ public class Body extends GraphicObject{
 		return numLimbs;
 	}
 	
+	public int getNumJoints () {
+		return limbJoints;
+	}
+	
 	public ArrayList<Limb> getLimbs(){
 		return limbs;
+	}
+	
+	public void hit() {
+		
 	}
 	
 	/**
@@ -185,5 +242,12 @@ public class Body extends GraphicObject{
 		return reachedLastFrame;
 	}
 	
-	
+	public void restartAnim() {
+		KeyFrame start = keys.get(0);
+		x = start.getX();
+		y = start.getY();
+		a = start.getA();
+		t= 0;
+		reachedLastFrame = false;
+	}
 }
