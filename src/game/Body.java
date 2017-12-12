@@ -18,6 +18,7 @@ public class Body extends GraphicObject{
 	boolean reachedLastFrame;
 	AnimState state;
 	Animations anims;
+	float torsoSize = 12f;
 	
 	public Body(String animFile, int numLimbs_, int limbJoints_) {
 		numLimbs = numLimbs_;
@@ -37,15 +38,24 @@ public class Body extends GraphicObject{
 			System.out.println("Failed opening specified file, so using default file.");
 			keys = new ArrayList<KeyFrame>();
 			ArrayList<ArrayList<Float>> limbAngles = new ArrayList<>();
-			for(int i = 0; i<numLimbs; i++) {
-				ArrayList<Float> startJointPos = new ArrayList<Float>();
-				startJointPos.add(0f);
-				startJointPos.add(i*2*PApplet.PI/numLimbs);
-				for(int j = 0; j<limbJoints-1; j++)
-					startJointPos.add(0f);
-				limbAngles.add(startJointPos);
-			}
-			start = new KeyFrame(0, 0, 0, 0, limbAngles);
+			ArrayList<Float> startJointPos0 = new ArrayList<Float>();
+			startJointPos0.add(-2.3561945f);
+			startJointPos0.add(0f);
+			limbAngles.add(startJointPos0);
+			ArrayList<Float> startJointPos1 = new ArrayList<Float>();
+			startJointPos1.add(-1.7671458f);
+			startJointPos1.add(0f);
+			limbAngles.add(startJointPos1);
+			ArrayList<Float> startJointPos2 = new ArrayList<Float>();
+			startJointPos2.add(3.3379426f);
+			startJointPos2.add(0f);
+			limbAngles.add(startJointPos2);
+			ArrayList<Float> startJointPos3 = new ArrayList<Float>();
+			startJointPos3.add(3.926991f);
+			startJointPos3.add(0f);
+			limbAngles.add(startJointPos3);
+			
+			start = new KeyFrame(0, 0, 0, -0.7853982f, limbAngles);
 			keys.add(start);
 		}
 		t = 0;
@@ -53,12 +63,11 @@ public class Body extends GraphicObject{
 
 		limbs = new ArrayList<Limb>();
 		for( int i = 0; i<numLimbs; i++) {
-			limbs.add(new Limb(start.getLimbsJoints().get(i), 0, 0));
-			//limbs.add(new Limb(start.getLimbsJoints().get(i), PApplet.cos(i*2*PApplet.PI/numLimbs), PApplet.sin(i*2*PApplet.PI/numLimbs)));
+			limbs.add(new Limb(start.getLimbsJoints().get(i), (torsoSize/2)*PApplet.cos(i*2*PApplet.PI/numLimbs), (torsoSize/2)*PApplet.sin(i*2*PApplet.PI/numLimbs)));
 		}
 		jumpTo(0);
 		
-		torso = new Torso(6f);
+		torso = new Torso(torsoSize);
 		
 	}
 	
@@ -88,10 +97,11 @@ public class Body extends GraphicObject{
 		app_.pushMatrix();
 		app_.translate(x, y);
 		app_.rotate(a);
-		
+
+		app_.noStroke();
+		torso.draw();
 		for(int i = 0; i<numLimbs; i++)
 			limbs.get(i).draw();
-		torso.draw();
 		app_.popMatrix();
 	}
 	
@@ -193,11 +203,11 @@ public class Body extends GraphicObject{
 	}
 	
 	public void moveLeft() {
-		setState(AnimState.WALK);
+		//setState(AnimState.WALK);
 		x-=moveIncrement;
 	}
 	public void moveRight() {
-		setState(AnimState.WALK);
+		//setState(AnimState.WALK);
 		x+=moveIncrement;
 	}
 	
@@ -230,7 +240,7 @@ public class Body extends GraphicObject{
 		ArrayList<ArrayList<Float>> limbAngles = new ArrayList<>();
 		for(int i = 0; i<numLimbs; i++) {
 			ArrayList<Float> jointAngles = new ArrayList<Float>();
-			for(int j = 0; j<limbJoints+1; j++) {
+			for(int j = 0; j<limbJoints; j++) {
 				jointAngles.add(limbs.get(i).getTheta(j));
 			}
 			limbAngles.add(jointAngles);

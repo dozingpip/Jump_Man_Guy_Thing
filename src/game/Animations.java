@@ -69,6 +69,7 @@ public class Animations {
 					for(int k = 0; k<numLimbs; k++) {
 						String[] joints = lines[keyframeStartLine+1+k].split(",");
 						ArrayList<Float> limbAngles = new ArrayList<Float>();
+						limbAngles.add(0f);
 						for(int l=0; l<numJoints; l++) {
 							limbAngles.add(Float.parseFloat(joints[l]));
 						}

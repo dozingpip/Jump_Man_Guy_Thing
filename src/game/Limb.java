@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 
 public class Limb extends GraphicObject{
-	public final static int JOINT_COLOR = 0xF6784200;
-	public final static int LINK_COLOR = 0x00000000;
-	public final static float JOINT_RADIUS = 0.6f;
+	public final static int JOINT_COLOR = 0xFF000000;
+	public final static int LINK_COLOR = 0xFF000000;
+	public final static float JOINT_RADIUS = 0.3f;
 	public final static float JOINT_DIAMETER = 2*JOINT_RADIUS;
 	public final static float LINK_THICKNESS = 0.6f;
 	
 	private final float H = 4;
 	
 	private int numJoints;
-	float x, y;
+//	float x, y;
 	private ArrayList<Float> theta;
 	
 	
@@ -30,18 +30,19 @@ public class Limb extends GraphicObject{
 	
 	public void draw() {
 		app_.pushMatrix();
-		app_.translate(x, y);
+		app_.translate(getX(), getY());
 		for (int k=0; k<numJoints; k++) 
 		{
+			//app_.println(k);
+			app_.noStroke();
+			app_.fill(JOINT_COLOR);
+			app_.ellipse(0, 0, JOINT_DIAMETER, JOINT_DIAMETER);
 			app_.rotate(theta.get(k));
 			app_.noFill();
 			app_.stroke(LINK_COLOR);
 			app_.strokeWeight(LINK_THICKNESS);
 			app_.line(0, 0, 0, H);
 			app_.translate(0, H);
-			app_.noStroke();
-			app_.fill(JOINT_COLOR);
-			app_.ellipse(0, 0, JOINT_DIAMETER, JOINT_DIAMETER);
 		}
 		app_.popMatrix();
 	}

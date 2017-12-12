@@ -67,8 +67,10 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	 		scale(WORLD_TO_PIXELS_SCALE, -WORLD_TO_PIXELS_SCALE);	
 			
 	 		// horizontal line for the "ground"
-			stroke(0);
+			stroke(255, 0, 0);
+			strokeWeight(0.1f);
 			line(WORLD_X_MIN, 0, WORLD_X_MAX, 0);
+			line(0, WORLD_Y_MIN, 0, WORLD_Y_MAX);
 			
 			if(startScreen)
 				startUI.draw();
@@ -165,17 +167,23 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 				body.rotate(-ANGLE_INCR);
 				break;
 			case 'z':
-				body.getLimbs().get(limbSelected).rotateJoint(1, ANGLE_INCR);
+				body.getLimbs().get(limbSelected).rotateJoint(0, ANGLE_INCR);
 				break;
 			case 'x':
-				body.getLimbs().get(limbSelected).rotateJoint(1, -ANGLE_INCR);
+				body.getLimbs().get(limbSelected).rotateJoint(0, -ANGLE_INCR);
 				break;
 			case 'c':
-				body.getLimbs().get(limbSelected).rotateJoint(2, ANGLE_INCR);
+				body.getLimbs().get(limbSelected).rotateJoint(1, ANGLE_INCR);
 				break;
 			case 'v':
-				body.getLimbs().get(limbSelected).rotateJoint(2, -ANGLE_INCR);
+				body.getLimbs().get(limbSelected).rotateJoint(1, -ANGLE_INCR);
 				break;
+//			case 'c':
+//				body.getLimbs().get(limbSelected).rotateJoint(2, ANGLE_INCR);
+//				break;
+//			case 'v':
+//				body.getLimbs().get(limbSelected).rotateJoint(2, -ANGLE_INCR);
+//				break;
 			}
 		}
 	}
@@ -399,16 +407,24 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 		editAnimation = true;
 		keyframes = new ArrayList<KeyFrame>();
 		ArrayList<ArrayList<Float>> limbAngles = new ArrayList<>();
-		for(int i = 0; i<limbsOnBody; i++) {
-			ArrayList<Float> startJointPos = new ArrayList<Float>();
-			startJointPos.add(0f);
-			startJointPos.add(i*2*PI/limbsOnBody);
-			for(int j = 0; j<jointsOnLimbs-1; j++)
-				startJointPos.add(0f);
-			limbAngles.add(startJointPos);
-			
-		}
-		start = new KeyFrame(0, 0, 0, 0, limbAngles);
+		ArrayList<Float> startJointPos0 = new ArrayList<Float>();
+		startJointPos0.add(-2.3561945f);
+		startJointPos0.add(0f);
+		limbAngles.add(startJointPos0);
+		ArrayList<Float> startJointPos1 = new ArrayList<Float>();
+		startJointPos1.add(-1.7671458f);
+		startJointPos1.add(0f);
+		limbAngles.add(startJointPos1);
+		ArrayList<Float> startJointPos2 = new ArrayList<Float>();
+		startJointPos2.add(3.3379426f);
+		startJointPos2.add(0f);
+		limbAngles.add(startJointPos2);
+		ArrayList<Float> startJointPos3 = new ArrayList<Float>();
+		startJointPos3.add(3.926991f);
+		startJointPos3.add(0f);
+		limbAngles.add(startJointPos3);
+		
+		start = new KeyFrame(0, 0, 0, -0.7853982f, limbAngles);
 		keyframes.add(start);
 		initializeEverything();
 	}

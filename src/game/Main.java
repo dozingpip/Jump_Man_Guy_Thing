@@ -55,7 +55,6 @@ public class Main extends PApplet implements ApplicationConstants{
 		
 		if (animate)
 		{
-			
 			//	time in seconds since last update: (t-lastTime_)*0.001f
 			float dt = (t-lastTime)*0.001f;
 			

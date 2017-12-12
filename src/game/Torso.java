@@ -4,7 +4,7 @@ public class Torso extends GraphicObject{
 	float size;
 	
 	//body color
-	public final static int COLOR = 0xF0F7BA00;
+	public final static int COLOR = 0xA0F7BA00;
 	
 	public Torso(float size_) {
 		size = size_;
