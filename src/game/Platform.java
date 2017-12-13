@@ -2,7 +2,9 @@ package game;
 
 import processing.core.PApplet;
 
-public class Platform {
+public class Platform extends GraphicObject{
+	
+	private static final float DOT_RADIUS = 0.5f;
 	
 	private Surface[] surfaces;
 	
@@ -49,6 +51,7 @@ public class Platform {
 	}
 	
 	public void draw() {
+		app_.ellipse(x, y, DOT_RADIUS*2, DOT_RADIUS*2);
 		for(Surface s : surfaces) {
 			s.draw();
 		}
