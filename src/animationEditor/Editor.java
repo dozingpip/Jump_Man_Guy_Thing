@@ -1,7 +1,6 @@
 package animationEditor;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
