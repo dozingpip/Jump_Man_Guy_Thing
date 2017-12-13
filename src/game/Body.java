@@ -18,7 +18,7 @@ public class Body extends GraphicObject{
 	boolean reachedLastFrame;
 	AnimState state;
 	Animations anims;
-	float torsoSize = 12f;
+	float torsoSize = 8f;
 	Hitbox hitbox;
 	float hitboxAngle = PApplet.PI/4;
 	
