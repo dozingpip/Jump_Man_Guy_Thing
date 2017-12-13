@@ -27,8 +27,8 @@ public class Platform extends GraphicObject{
 			System.out.println("Angle Change " + angleChange);
 			System.out.println("New Angle for Surface " + (s.getAngle() + angleChange));
 			s.setAngle(s.getAngle() + angleChange);
-			float relativeX = x - s.getX();
-			float relativeY = y - s.getY();
+			float relativeX = s.getX() - x;
+			float relativeY = s.getY() - y;
 			System.out.println("Cosine of the angle " + PApplet.cos(angleChange));
 			System.out.println("Sine of the angle " + PApplet.sin(angleChange));
 			float newX = PApplet.cos(angleChange) * relativeX + (-PApplet.sin(angleChange) * relativeY);
