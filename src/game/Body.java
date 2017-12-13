@@ -19,11 +19,14 @@ public class Body extends GraphicObject{
 	AnimState state;
 	Animations anims;
 	float torsoSize = 12f;
+	Hitbox hitbox;
+	float hitboxAngle = PApplet.PI/4;
 	
 	public Body(String animFile, int numLimbs_, int limbJoints_) {
 		numLimbs = numLimbs_;
 		limbJoints = limbJoints_;
 		KeyFrame start;
+		
 		try {
 			anims = new Animations(animFile);
 			if(anims.getNumLimbs()!=numLimbs || anims.getNumJoints()!=limbJoints) {
@@ -34,9 +37,10 @@ public class Body extends GraphicObject{
 			setState(AnimState.IDLE);
 			start = keys.get(0);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Failed opening specified file, so using default file.");
 			keys = new ArrayList<KeyFrame>();
+			
+			//default position of the body.
 			ArrayList<ArrayList<Float>> limbAngles = new ArrayList<>();
 			ArrayList<Float> startJointPos0 = new ArrayList<Float>();
 			startJointPos0.add(-2.3561945f);
@@ -54,9 +58,9 @@ public class Body extends GraphicObject{
 			startJointPos3.add(3.926991f);
 			startJointPos3.add(0f);
 			limbAngles.add(startJointPos3);
-			
 			start = new KeyFrame(0, 0, 0, -0.7853982f, limbAngles);
 			keys.add(start);
+			
 		}
 		t = 0;
 		reachedLastFrame = false;
@@ -65,8 +69,13 @@ public class Body extends GraphicObject{
 		for( int i = 0; i<numLimbs; i++) {
 			limbs.add(new Limb(start.getLimbsJoints().get(i), (torsoSize/2)*PApplet.cos(i*2*PApplet.PI/numLimbs), (torsoSize/2)*PApplet.sin(i*2*PApplet.PI/numLimbs)));
 		}
-		jumpTo(0);
 		
+		jumpTo(0);
+		float xMin = -(torsoSize/2);
+		float xMax = (torsoSize/2);
+		float yMin = -(torsoSize/2)-6.5f;
+		float yMax = (torsoSize/2);
+		hitbox = new Hitbox(xMin, yMin, xMax, yMax);
 		torso = new Torso(torsoSize);
 		
 	}
@@ -100,6 +109,10 @@ public class Body extends GraphicObject{
 
 		app_.noStroke();
 		torso.draw();
+		app_.pushMatrix();
+		app_.rotate(hitboxAngle);
+		hitbox.draw();
+		app_.popMatrix();
 		for(int i = 0; i<numLimbs; i++)
 			limbs.get(i).draw();
 		app_.popMatrix();
