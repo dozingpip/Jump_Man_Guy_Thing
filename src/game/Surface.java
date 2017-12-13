@@ -40,8 +40,19 @@ public class Surface extends GraphicObject {
 		return y2;
 	}
 	
+	public void setAngle(float newAngle) {
+		super.setAngle(newAngle % (2* PApplet.PI));
+		update();
+	}
+	
 	public void draw() {
-		app_.stroke(255, 0, 0);
+		if (getAngle() < PApplet.PI/2 + PApplet.PI/64 && getAngle() > PApplet.PI/2 - PApplet.PI/64) {
+			app_.stroke(0, 255, 0);
+		}
+		else {
+
+			app_.stroke(255, 0, 0);
+		}
 		app_.line(getX(), getY(), x2, y2);
 	}
 }

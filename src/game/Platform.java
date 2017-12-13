@@ -19,6 +19,7 @@ public class Platform extends GraphicObject{
 		x = x_;
 		y = y_;
 		angle = angle_;
+		updateRotation(angle);
 	}
 	
 	public Platform(float x_, float y_, float angle_, Surface firstSurface, float[] lengths, float[] angles) {
@@ -30,8 +31,9 @@ public class Platform extends GraphicObject{
 		}
 		surfaces = new Surface[lengths.length + 1];
 		surfaces[0] = firstSurface;
+		surfaces[0].setAngle(surfaces[0].getAngle() + angle);
 		for(int i = 0; i < lengths.length; i++) {
-			surfaces[i+1] = new Surface(surfaces[i].getX2(), surfaces[i].getY2(), lengths[i], angles[i]);
+			surfaces[i+1] = new Surface(surfaces[i].getX2(), surfaces[i].getY2(), lengths[i], surfaces[i].getAngle() + angles[i]);
 		}
 	}
 	

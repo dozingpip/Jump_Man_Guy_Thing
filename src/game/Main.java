@@ -21,12 +21,13 @@ public class Main extends PApplet implements ApplicationConstants{
 
 	public void setup() 
 	{
+		frameRate(600);
 		setupGraphicClasses_();
 		lastTime = millis();
 		player = new Player();
 		
 //		testPlatform = new Platform(0, 0, 0, new Surface[]{new Surface(-10, -5, 20, 0), new Surface(4, 5, 8, 7*PI/5)});
-		testPlatform = new Platform(0, 0, 0, new Surface(-10, -2.5f, 20, 0), new float[] {5, 20, 5}, new float[] {PI/2, PI, 3*PI/2});
+		testPlatform = new Platform(0, 0, PI/4, new Surface(-10, -2.5f, 20, 0), new float[] {5, 20, 5}, new float[] {PI/2, PI/2, PI/2});
 	}
 	
 	public void draw() 
@@ -53,6 +54,8 @@ public class Main extends PApplet implements ApplicationConstants{
 			
 			popMatrix();
 		}
+		
+		testPlatform.setAngle(testPlatform.getAngle() + PI/1024);
 		
 		float t = millis()-animStart;
 		
@@ -87,12 +90,12 @@ public class Main extends PApplet implements ApplicationConstants{
 			animStart = millis();
 			player.stop(key);
 			break;
-		case '[':
-			testPlatform.setAngle(testPlatform.getAngle() - PI/16);
-			break;
-		case ']':
-			testPlatform.setAngle(testPlatform.getAngle() + PI/16);
-			break;
+//		case '[':
+//			testPlatform.setAngle(testPlatform.getAngle() - PI/16);
+//			break;
+//		case ']':
+//			testPlatform.setAngle(testPlatform.getAngle() + PI/16);
+//			break;
 	}
 	}
 	
