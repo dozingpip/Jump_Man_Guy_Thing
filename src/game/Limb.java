@@ -11,7 +11,7 @@ public class Limb extends GraphicObject{
 	public final static float JOINT_DIAMETER = 2*JOINT_RADIUS;
 	public final static float LINK_THICKNESS = 0.6f;
 	
-	private final float H = 4;
+	private final float H = 3;
 	
 	private int numJoints;
 //	float x, y;

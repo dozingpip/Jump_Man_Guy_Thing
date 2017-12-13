@@ -1,17 +1,18 @@
 package game;
 
-public class Player {
+public class Player extends GraphicObject{
 	Body body;
 	float x, y;
 	int health = 5;
+	private float moveIncrement = 1f;
 	String playerAnimFile = "player.txt";
-	
 	
 	public Player() {
 		body = new Body(playerAnimFile, 4, 2);
 	}
 	
 	public void draw() {
+		app_.translate(x, y);
 		body.draw();
 	}
 	
@@ -41,9 +42,11 @@ public class Player {
 				break;
 			case 'a':
 				body.walk();
+				moveLeft();
 				break;
 			case 'd':
 				body.walk();
+				moveRight();
 				break;
 		}
 	}
@@ -60,6 +63,21 @@ public class Player {
 				body.idle();
 				break;
 		}
+	}
+	
+	public void moveUp() {
+		y+=moveIncrement;
+	}
+	
+	public void moveDown() {
+		y-=moveIncrement;
+	}
+	
+	public void moveLeft() {
+		x-=moveIncrement;
+	}
+	public void moveRight() {
+		x+=moveIncrement;
 	}
 	
 	public void update(float dt) {
