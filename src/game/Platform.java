@@ -21,6 +21,20 @@ public class Platform extends GraphicObject{
 		angle = angle_;
 	}
 	
+	public Platform(float x_, float y_, float angle_, Surface firstSurface, float[] lengths, float[] angles) {
+		x = x_;
+		y = y_;
+		angle = angle_;
+		if (lengths.length != angles.length) {
+			System.out.println("PLATFORM AT X = " + x + " Y = " + y + " ANGLE = " + angle + " \n HAS UNEQUAL NUMBER OF LENGTHS AND ANGLES");
+		}
+		surfaces = new Surface[lengths.length + 1];
+		surfaces[0] = firstSurface;
+		for(int i = 0; i < lengths.length; i++) {
+			surfaces[i+1] = new Surface(surfaces[i].getX2(), surfaces[i].getY2(), lengths[i], angles[i]);
+		}
+	}
+	
 	public void updateRotation(float angleChange) {
 		for(Surface s : surfaces) {
 			System.out.println("New Rotation");

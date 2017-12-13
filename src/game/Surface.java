@@ -32,6 +32,14 @@ public class Surface extends GraphicObject {
 //		}
 	}
 	
+	public float getX2() {
+		return x2;
+	}
+	
+	public float getY2() {
+		return y2;
+	}
+	
 	public void draw() {
 		app_.stroke(255, 0, 0);
 		app_.line(getX(), getY(), x2, y2);

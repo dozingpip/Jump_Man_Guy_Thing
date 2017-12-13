@@ -25,7 +25,8 @@ public class Main extends PApplet implements ApplicationConstants{
 		lastTime = millis();
 		player = new Player();
 		
-		testPlatform = new Platform(0, 0, 0, new Surface[]{new Surface(0, 3, 5, PI/4)});
+//		testPlatform = new Platform(0, 0, 0, new Surface[]{new Surface(-10, -5, 20, 0), new Surface(4, 5, 8, 7*PI/5)});
+		testPlatform = new Platform(0, 0, 0, new Surface(-10, -2.5f, 20, 0), new float[] {5, 20, 5}, new float[] {PI/2, PI, 3*PI/2});
 	}
 	
 	public void draw() 
