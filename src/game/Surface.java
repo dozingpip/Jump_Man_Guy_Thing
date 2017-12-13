@@ -2,22 +2,15 @@ package game;
 
 import processing.core.PApplet;
 
-public class Surface {
-	
-	protected static PApplet app_;
-	private static int appSetCounter_ = 0;
-	
-	private float x, y;
+public class Surface extends GraphicObject {
 	private float x2, y2;
-	private float length, angle;
+	private float length_;
 	private float perpAngle;
 	private boolean upToDate;
 	
-	public Surface (float x_, float y_, float length_, float angle_) {
-		x = x_;
-		y = y_;
-		length = length_;
-		angle = angle_;
+	public Surface (float x, float y, float length, float angle) {
+		super(x, y, angle);
+		length_ = length;
 		upToDate = false;
 		update();
 	}
@@ -32,15 +25,15 @@ public class Surface {
 	
 	public void update() {
 		if (!upToDate) {
-			perpAngle = angle + PApplet.PI/2;
-			x2 = length * PApplet.cos(angle);
-			y2 = length * PApplet.sin(angle);
+			perpAngle = getAngle() + PApplet.PI/2;
+			x2 = length_ * PApplet.cos(getAngle());
+			y2 = length_ * PApplet.sin(getAngle());
 			upToDate = true;
 		}
 	}
 	
 	public void draw() {
 		app_.stroke(255, 0, 0);
-		app_.line(x, y, x2, y2);
+		app_.line(getX(), getY(), x2, y2);
 	}
 }
