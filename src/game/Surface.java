@@ -46,7 +46,7 @@ public class Surface extends GraphicObject {
 	}
 	
 	public void draw() {
-		if (getAngle() < PApplet.PI/2 + PApplet.PI/64 && getAngle() > PApplet.PI/2 - PApplet.PI/64) {
+		if ((getAngle() < PApplet.PI/2 + PApplet.PI/64 && getAngle() > PApplet.PI/2 - PApplet.PI/32) || (getAngle() < 3*PApplet.PI/2 + PApplet.PI/64 && getAngle() > 3*PApplet.PI/2 - PApplet.PI/32)) {
 			app_.stroke(0, 255, 0);
 		}
 		else {
