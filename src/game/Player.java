@@ -40,13 +40,28 @@ public class Player {
 				body.jump();
 				break;
 			case 'a':
-				body.moveLeft();
+				body.walk();
 				break;
 			case 'd':
-				body.moveRight();
+				body.walk();
 				break;
 		}
 	}
+	
+	public void stop(char k) {
+		switch(k) {
+			case 'w':
+				body.idle();
+				break;
+			case 'a':
+				body.idle();
+				break;
+			case 'd':
+				body.idle();
+				break;
+		}
+	}
+	
 	public void update(float dt) {
 		body.update(dt);
 	}

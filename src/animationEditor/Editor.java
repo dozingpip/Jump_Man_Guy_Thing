@@ -29,7 +29,7 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	KeyFrame start;
 	int limbSelected;
 	int jointSelected;
-	float buttonY = -14f;
+	float buttonY = WORLD_Y_MIN+6f;
 	int jointsOnLimbs = 2;
 	int limbsOnBody = 4;
 	int timeSelected = 1;
@@ -70,6 +70,8 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 			strokeWeight(0.1f);
 			line(WORLD_X_MIN, 0, WORLD_X_MAX, 0);
 			line(0, WORLD_Y_MIN, 0, WORLD_Y_MAX);
+			fill(0, 255, 255);
+			ellipse(0, 0, 1, 1);
 			
 			if(startScreen)
 				startUI.draw();
@@ -177,12 +179,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 			case 'v':
 				body.getLimbs().get(limbSelected).rotateJoint(1, -ANGLE_INCR);
 				break;
-//			case 'c':
-//				body.getLimbs().get(limbSelected).rotateJoint(2, ANGLE_INCR);
-//				break;
-//			case 'v':
-//				body.getLimbs().get(limbSelected).rotateJoint(2, -ANGLE_INCR);
-//				break;
 			}
 		}
 	}

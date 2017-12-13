@@ -51,11 +51,9 @@ public class Animations {
 		ArrayList<ArrayList<KeyFrame>> allAnims = new ArrayList<>();
 		for(int i = 0; i<numAnimations; i++) {
 			int numFrames = Integer.parseInt(lines[animStartLine]);
-			//System.out.println("The #"+i+ " animation has "+ numFrames+" frames.");
 			
 			// The plus one is for the two extra new lines between animations
 			int numLinesForThisAnimation = numLinesPerKeyframe*numFrames+2;
-			//System.out.println("The animation has "+ numLinesForThisAnimation+" lines.");
 			ArrayList<KeyFrame> anAnimation = new ArrayList<>();
 			for(int j = 0; j<numFrames; j++) {
 				int keyframeStartLine = animStartLine+1+j*numLinesPerKeyframe;
@@ -69,7 +67,6 @@ public class Animations {
 					for(int k = 0; k<numLimbs; k++) {
 						String[] joints = lines[keyframeStartLine+1+k].split(",");
 						ArrayList<Float> limbAngles = new ArrayList<Float>();
-						limbAngles.add(0f);
 						for(int l=0; l<numJoints; l++) {
 							limbAngles.add(Float.parseFloat(joints[l]));
 						}
@@ -85,7 +82,7 @@ public class Animations {
 		}
 		idleAnim = allAnims.get(idle_idx);
 		walkAnim = allAnims.get(walk_idx);
-		jumpAnim = allAnims.get(jump_idx);
+		//jumpAnim = allAnims.get(jump_idx);
 		/*hurtAnim = allAnims.get(hurt_idx);
 		dyingAnim = allAnims.get(dying_idx);
 		*/

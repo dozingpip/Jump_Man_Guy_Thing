@@ -202,9 +202,12 @@ public class Body extends GraphicObject{
 		return a;
 	}
 	
+	public void idle() {
+		setState(AnimState.IDLE);
+	}
 
 	public void jump() {
-		setState(AnimState.JUMP);
+		//setState(AnimState.JUMP);
 	}
 	
 	public void moveUp() {
@@ -216,12 +219,14 @@ public class Body extends GraphicObject{
 	}
 	
 	public void moveLeft() {
-		//setState(AnimState.WALK);
 		x-=moveIncrement;
 	}
 	public void moveRight() {
-		//setState(AnimState.WALK);
 		x+=moveIncrement;
+	}
+	
+	public void walk() {
+		setState(AnimState.WALK);
 	}
 	
 	public void rotate(float angle) {
