@@ -24,12 +24,12 @@ public class Surface extends GraphicObject {
 //	}
 	
 	public void update() {
-		if (!upToDate) {
+//		if (!upToDate) {
 			perpAngle = getAngle() + PApplet.PI/2;
-			x2 = length_ * PApplet.cos(getAngle());
-			y2 = length_ * PApplet.sin(getAngle());
+			x2 = getX() + length_ * PApplet.cos(getAngle());
+			y2 = getY() + length_ * PApplet.sin(getAngle());
 			upToDate = true;
-		}
+//		}
 	}
 	
 	public void draw() {

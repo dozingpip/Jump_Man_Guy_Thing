@@ -19,14 +19,33 @@ public class Platform {
 		angle = angle_;
 	}
 	
-	public void updateRotation(float newAngle) {
+	public void updateRotation(float angleChange) {
 		for(Surface s : surfaces) {
-			s.setAngle(s.getAngle() + newAngle);
+			System.out.println("New Rotation");
+			System.out.println("Angle Change " + angleChange);
+			System.out.println("New Angle for Surface " + (s.getAngle() + angleChange));
+			s.setAngle(s.getAngle() + angleChange);
 			float relativeX = x - s.getX();
 			float relativeY = y - s.getY();
-			float newX = PApplet.cos(newAngle) * relativeX - (PApplet.sin(newAngle) * relativeY);
-			float newY = PApplet.sin(newAngle) * relativeX + PApplet.cos(newAngle) * relativeY;
+			System.out.println("Cosine of the angle " + PApplet.cos(angleChange));
+			System.out.println("Sine of the angle " + PApplet.sin(angleChange));
+			float newX = PApplet.cos(angleChange) * relativeX + (-PApplet.sin(angleChange) * relativeY);
+			float newY = PApplet.sin(angleChange) * relativeX + PApplet.cos(angleChange) * relativeY;
+			System.out.println("New Start X " + newX);
+			System.out.println("New Start Y " + newY);
+			s.setX(newX + x);
+			s.setY(newY + y);
+			s.update();
 		}
+	}
+	
+	public float getAngle() {
+		return angle;
+	}
+	
+	public void setAngle(float angle_) {
+		updateRotation(angle_ - angle);
+		angle = angle_;
 	}
 	
 	public void draw() {

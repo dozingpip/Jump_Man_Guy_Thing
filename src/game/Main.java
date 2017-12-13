@@ -6,6 +6,8 @@ public class Main extends PApplet implements ApplicationConstants{
 	
 	Player player;
 	
+	Platform testPlatform;
+	
 	private boolean animate = true;
 	private float lastTime;
 	private float animStart =0;
@@ -22,6 +24,8 @@ public class Main extends PApplet implements ApplicationConstants{
 		setupGraphicClasses_();
 		lastTime = millis();
 		player = new Player();
+		
+		testPlatform = new Platform(0, 0, 0, new Surface[]{new Surface(0, 2, 5, PI/4)});
 	}
 	
 	public void draw() 
@@ -41,6 +45,8 @@ public class Main extends PApplet implements ApplicationConstants{
 			strokeWeight(0.2f);
 			line(WORLD_X_MIN, 0, WORLD_X_MAX, 0);
 			
+			testPlatform.draw();
+						
 			player.draw();
 			
 			
@@ -79,6 +85,12 @@ public class Main extends PApplet implements ApplicationConstants{
 		case 'w': case 'd': case 'a': 
 			animStart = millis();
 			player.stop(key);
+			break;
+		case '[':
+			testPlatform.setAngle(testPlatform.getAngle() - PI/16);
+			break;
+		case ']':
+			testPlatform.setAngle(testPlatform.getAngle() + PI/16);
 			break;
 	}
 	}
