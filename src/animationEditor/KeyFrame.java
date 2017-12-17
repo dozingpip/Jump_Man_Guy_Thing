@@ -3,8 +3,7 @@ package animationEditor;
 import java.util.ArrayList;
 
 public class KeyFrame {
-	int t;
-	float x, y, a;
+	float t, x, y, a;
 	ArrayList<ArrayList<Float>> limbs;
 	
 	/**
@@ -15,7 +14,7 @@ public class KeyFrame {
 	 * @param a_
 	 * @param limbs_
 	 */
-	public KeyFrame(int t_, float x_, float y_, float a_,
+	public KeyFrame(float t_, float x_, float y_, float a_,
 			ArrayList<ArrayList<Float>> limbs_) {
 		t = t_;
 		x = x_;
@@ -24,14 +23,14 @@ public class KeyFrame {
 		limbs = limbs_;
 	}
 	
-	public KeyFrame(int t_, float x_, float y_, float a_) {
+	public KeyFrame(float t_, float x_, float y_, float a_) {
 		t = t_;
 		x = x_;
 		y = y_;
 		a = a_;
 	}
 	
-	public int getT() {
+	public float getT() {
 		return t;
 	}
 	

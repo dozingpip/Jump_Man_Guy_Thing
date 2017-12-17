@@ -12,7 +12,6 @@ public class Main extends PApplet implements ApplicationConstants{
 	
 	private boolean animate = true;
 	private float lastTime;
-	private float animStart =0;
 	private long frame = 0L;
 	boolean grounded = false;
 	ArrayList<Character> keysPressed;
@@ -63,7 +62,7 @@ public class Main extends PApplet implements ApplicationConstants{
 		testPlatform.setAngle(testPlatform.getAngle() + PI/1024);
 		//testPlatform.checkColliding(player);
 		
-		float t = millis()-animStart;
+		float t = millis();
 		
 		if (animate)
 		{
@@ -87,14 +86,11 @@ public class Main extends PApplet implements ApplicationConstants{
 	}
 	
 	public void keyPressed() {
-		if(!keysPressed.contains(key)) {
-			animStart = millis();
+		if(!keysPressed.contains(key))
 			keysPressed.add(key);
-		}
 	}
 	
 	public void keyReleased() {
-		animStart = millis();
 		keysPressed.remove(keysPressed.indexOf(key));
 	}
 	

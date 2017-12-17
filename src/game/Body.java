@@ -59,7 +59,6 @@ public class Body extends GraphicObject{
 			limbAngles.add(startJointPos3);
 			start = new KeyFrame(0, 0, 0, -0.7853982f, limbAngles);
 			keys.add(start);
-			
 		}
 		t = 0;
 		reachedLastFrame = false;
@@ -161,7 +160,7 @@ public class Body extends GraphicObject{
 											 1).getLimbsJoints().get(i).get(j));
 			reachedLastFrame = true;
 			//if the animation is not the idle one, stop playing when done.  If it is the idle animation, just restart it.
-			if(state!=AnimState.IDLE)
+			if(state==AnimState.JUMP)
 				setState(AnimState.IDLE);
 			else
 				t = 0;
@@ -199,7 +198,7 @@ public class Body extends GraphicObject{
 	}
 
 	public void jump() {
-		//setState(AnimState.JUMP);
+		setState(AnimState.JUMP);
 	}
 	
 	public void moveUp() {

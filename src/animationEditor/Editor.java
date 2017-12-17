@@ -18,7 +18,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	private Menu jumpToUI;
 	private Menu timeSelectUI;
 	private Menu startUI;
-	private Menu limbsUI;
 	
 	private final float ANGLE_INCR = PI/16;
 	private boolean animate = false;
@@ -36,7 +35,7 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	boolean editAnimation = false;
 	boolean showJumpTo = false;
 	boolean startScreen = false;
-	float defaultFrameLength = 1f;
+	float defaultFrameLength = 0.5f;
 	float timeReset = 0;
 	float frameSelectTime;
 	
@@ -79,7 +78,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 				body.draw();
 				if(editAnimation) {
 					editAnimUI.draw();
-					limbsUI.draw();
 				}else
 					playAnimUI.draw();
 	
@@ -91,7 +89,7 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 			popMatrix();
 		}
 		
-		float t = millis()-timeReset-frameSelectTime;
+		float t = millis()-timeReset;
 		
 		if (animate)
 		{
@@ -130,8 +128,10 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	 * @param index
 	 */
 	public void selectLimb(int index) {
+		body.getLimbs().get(limbSelected).deselect();
 		limbSelected = index;
 		println("Limb "+index+ " selected!");
+		body.getLimbs().get(limbSelected).select();
 	}
 	
 	public void keyReleased() 
@@ -179,6 +179,18 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 			case 'v':
 				body.getLimbs().get(limbSelected).rotateJoint(1, -ANGLE_INCR);
 				break;
+			case '0':
+				selectLimb(0);
+				break;
+			case'1':
+				selectLimb(1);
+				break;
+			case '2':
+				selectLimb(2);
+				break;
+			case '3':
+				selectLimb(3);
+				break;
 			}
 		}
 	}
@@ -192,7 +204,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 		else {
 			if(editAnimation) {
 				editAnimUI.checkIsInside(mouseXW, mouseYW);
-				limbsUI.checkIsInside(mouseXW, mouseYW);
 			}else
 				playAnimUI.checkIsInside(mouseXW, mouseYW);
 			if(showJumpTo)
@@ -246,21 +257,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 		buttonNames.add("   Play  ");
 
 		editAnimUI = new Menu(r, buttonNames, buttonY, WORLD_WIDTH, 2f, WORLD_X_MIN);
-	}
-	
-	/**
-	 * The ui for selecting which limb to edit with the keyboard controls is made here.
-	 * Also the second menu for the edit mode.
-	 */
-	public void initLimbsUI() {
-		ArrayList<Runnable> r = new ArrayList<Runnable>();
-		ArrayList<String> buttonNames = new ArrayList<String>();
-		for(int i = 0; i< body.getLimbs().size(); i++) {
-			buttonNames.add("Limb "+(i+1));
-			int whichLimb = i;
-			r.add(new Runnable() { public void run() { selectLimb(whichLimb);}});
-		}
-		limbsUI = new Menu(r, buttonNames, buttonY-3f, WORLD_WIDTH, 2f, WORLD_X_MIN);
 	}
 	
 	/**
@@ -426,13 +422,12 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	
 	public void initializeEverything() {
 		body = new Body("Animations/player.txt", limbsOnBody, jointsOnLimbs, 8);
-		
+		selectLimb(0);
 		lastTime = millis();
 		initAnimUI();
 		initPlayUI();
 		initJumpToUI();
 		initTimeSelectUI();
-		initLimbsUI();
 	}
 	
 	/**

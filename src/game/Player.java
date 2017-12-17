@@ -55,6 +55,7 @@ public class Player extends GraphicObject{
 		switch(k) {
 			case 'w':
 				moveUp();
+				body.jump();
 				break;
 			case 's':
 				moveDown();

@@ -7,9 +7,11 @@ import processing.core.PApplet;
 public class Limb extends GraphicObject{
 	public final static int JOINT_COLOR = 0xFF000000;
 	public final static int LINK_COLOR = 0xFF000000;
+	public final static int LINK_SELECTED_COLOR = 0xFF07BA;
 	public final static float JOINT_RADIUS = 0.3f;
 	public final static float JOINT_DIAMETER = 2*JOINT_RADIUS;
 	public final static float LINK_THICKNESS = 0.6f;
+	float linkColor = LINK_COLOR;
 	
 	private final float H = 3;
 	
@@ -38,7 +40,7 @@ public class Limb extends GraphicObject{
 			app_.ellipse(0, 0, JOINT_DIAMETER, JOINT_DIAMETER);
 			app_.rotate(theta.get(k));
 			app_.noFill();
-			app_.stroke(LINK_COLOR);
+			app_.stroke(linkColor);
 			app_.strokeWeight(LINK_THICKNESS);
 			app_.line(0, 0, 0, H);
 			app_.translate(0, H);
@@ -68,5 +70,12 @@ public class Limb extends GraphicObject{
 		return theta.get(index);
 	}
 	
+	public void select() {
+		linkColor = LINK_SELECTED_COLOR;
+	}
+	
+	public void deselect() {
+		linkColor = LINK_COLOR;
+	}
 	
 }

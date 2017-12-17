@@ -58,7 +58,7 @@ public class Animations {
 			for(int j = 0; j<numFrames; j++) {
 				int keyframeStartLine = animStartLine+1+j*numLinesPerKeyframe;
 				String[] items = lines[keyframeStartLine].split(",");
-				int t = Integer.parseInt(items[0]);
+				float t = Float.parseFloat(items[0]);
 				float x = Float.parseFloat(items[1]);
 				float y = Float.parseFloat(items[2]);
 				float a = Float.parseFloat(items[3]);
@@ -82,7 +82,7 @@ public class Animations {
 		}
 		idleAnim = allAnims.get(idle_idx);
 		walkAnim = allAnims.get(walk_idx);
-		//jumpAnim = allAnims.get(jump_idx);
+		jumpAnim = allAnims.get(jump_idx);
 		/*hurtAnim = allAnims.get(hurt_idx);
 		dyingAnim = allAnims.get(dying_idx);
 		*/
