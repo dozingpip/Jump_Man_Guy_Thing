@@ -1,39 +1,46 @@
 package game;
 
+import processing.core.PApplet;
+
 public class Hitbox extends GraphicObject{
 	//relative to object's center
-	float xMin, xMax, yMin, yMax;
+	float xMin, xMax, yMin, yMax, angle;
+	float width, height;
 	
-	public Hitbox(float xMin_, float yMin_, float xMax_, float yMax_) {
+	public Hitbox(float xMin_, float yMin_, float xMax_, float yMax_, float angle_) {
 		xMin = xMin_;
 		xMax = xMax_;
 		yMin = yMin_;
 		yMax = yMax_;
+		angle = angle_;
+		width = xMax-xMin;
+		height = yMax-yMin;
 	}
 	
 	public void draw() {
+		app_.pushMatrix();
 		app_.stroke(0);
+		app_.strokeWeight(0.2f);
 		app_.noFill();
-		app_.rect(xMin, yMin, xMax-xMin, yMax-yMin);
+		app_.translate(xMin, yMin);
+		app_.rotate(angle);
+		app_.rect(0, 0, width, height);
+		app_.popMatrix();
 	}
 	
 	/**
-	 * When using this, check the isHit on both objects and use an or.
-	 * If there were more checks there wouldn't have to be an or statement, but you'd be doing twice the work for not much cause.
+	 * only colliding if a corner of the other hitbox is touching this hitbox somewhere,
+	 * so if any corner of the other hitbox isInside this one, the boxes are colliding.
 	 * @param other
-	 * @return returns true when the other hitbox is touching this hitbox is on either the top or right side of the other.
+	 * @return returns true when the other hitbox is touching this hitbox with any corner.
 	 */
 	public boolean isColliding(Hitbox other) {
-		//touching on right side of this hitbox, left side of other hitbox
-		if( (getXMax() >= other.getXMin()) && ( (getYMin() <= other.getYMax()) && (getYMin()>= other.getYMin()) ) ) {
+		if(		isInside(other.getXMin(), other.getYMin()) ||
+				isInside(other.getXMin(), other.getYMax()) ||
+				isInside(other.getXMax(), other.getYMin()) ||
+				isInside(other.getXMax(), other.getYMax())) {
 			return true;
-		//touching on bottom side of this hitbox, top side of other hitbox
-		}else if( (getYMin() >= other.getYMax()) && ( (getXMax() <= other.getXMin()) && (getXMin()>= other.getXMax())) ) {
-			return true;
-		//don't need to check other cases because this will be used on both objects with an or 
-		}else {
-			return false;
-		}
+		}else return false;
 	}
 	
 	public float getXMin() {
@@ -50,6 +57,43 @@ public class Hitbox extends GraphicObject{
 	
 	public float getYMax() {
 		return yMax;
+	}
+	
+	public float getW() {
+		return width;
+	}
+	
+	public float getH() {
+		return height;
+	}
+	
+	public void incX(float x) {
+		xMin+=x;
+		xMax+=x;
+	}
+	
+	public void incY(float y) {
+		yMin+=y;
+		yMax+=y;
+	}
+
+	/**
+	 * Tells whether the point whose coordinates are passed is inside this object
+	 * 
+	 * @param x  x coordinate of the point (in world coordinates)
+	 * @param y x coordinate of the point (in world coordinates)
+	 * @return true if (x, y) is inside this object
+	 */
+	public boolean isInside(float x, float y)
+	{	
+		float dx = x - getX(), dy = y - getY();
+		float ca = PApplet.cos(angle), sa = PApplet.sin(angle);
+//		float ca = (float) Math.cos(angle_), sa = (float) Math.sin(angle_);
+		
+		float rdx = ca*dx + sa*dy;
+		float rdy = -sa*dx + ca*dy;
+		
+		return ((rdx >= 0) && (rdx <= getW()) && (rdy >= 0) && (rdy <= getH()));
 	}
 
 }

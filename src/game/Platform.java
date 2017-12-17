@@ -39,18 +39,18 @@ public class Platform extends GraphicObject{
 	
 	public void updateRotation(float angleChange) {
 		for(Surface s : surfaces) {
-			System.out.println("New Rotation");
-			System.out.println("Angle Change " + angleChange);
-			System.out.println("New Angle for Surface " + (s.getAngle() + angleChange));
+//			System.out.println("New Rotation");
+//			System.out.println("Angle Change " + angleChange);
+//			System.out.println("New Angle for Surface " + (s.getAngle() + angleChange));
 			s.setAngle(s.getAngle() + angleChange);
 			float relativeX = s.getX() - x;
 			float relativeY = s.getY() - y;
-			System.out.println("Cosine of the angle " + PApplet.cos(angleChange));
-			System.out.println("Sine of the angle " + PApplet.sin(angleChange));
+//			System.out.println("Cosine of the angle " + PApplet.cos(angleChange));
+//			System.out.println("Sine of the angle " + PApplet.sin(angleChange));
 			float newX = PApplet.cos(angleChange) * relativeX + (-PApplet.sin(angleChange) * relativeY);
 			float newY = PApplet.sin(angleChange) * relativeX + PApplet.cos(angleChange) * relativeY;
-			System.out.println("New Start X " + newX);
-			System.out.println("New Start Y " + newY);
+//			System.out.println("New Start X " + newX);
+//			System.out.println("New Start Y " + newY);
 			s.setX(newX + x);
 			s.setY(newY + y);
 			s.update();
@@ -67,10 +67,23 @@ public class Platform extends GraphicObject{
 	}
 	
 	public void draw() {
-		app_.ellipse(x, y, DOT_RADIUS*2, DOT_RADIUS*2);
+		//app_.ellipse(x, y, DOT_RADIUS*2, DOT_RADIUS*2);
 		for(Surface s : surfaces) {
 			s.draw();
 		}
+	}
+	
+	public boolean checkColliding(Player player) {
+		Surface hit = null;
+		for(Surface s: surfaces) {
+			if(s.isColliding(player.getHitbox())) {
+				hit = s;
+			}
+		}
+		if(hit!=null) {
+			System.out.println("hit!");
+			return true;
+		}else return false;
 	}
 	
 }

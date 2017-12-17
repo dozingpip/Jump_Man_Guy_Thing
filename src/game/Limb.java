@@ -33,7 +33,6 @@ public class Limb extends GraphicObject{
 		app_.translate(getX(), getY());
 		for (int k=0; k<numJoints; k++) 
 		{
-			//app_.println(k);
 			app_.noStroke();
 			app_.fill(JOINT_COLOR);
 			app_.ellipse(0, 0, JOINT_DIAMETER, JOINT_DIAMETER);

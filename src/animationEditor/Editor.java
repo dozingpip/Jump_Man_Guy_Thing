@@ -425,7 +425,7 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	}
 	
 	public void initializeEverything() {
-		body = new Body("Animations/player.txt", limbsOnBody, jointsOnLimbs);
+		body = new Body("Animations/player.txt", limbsOnBody, jointsOnLimbs, 8);
 		
 		lastTime = millis();
 		initAnimUI();

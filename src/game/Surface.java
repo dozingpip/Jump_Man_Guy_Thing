@@ -55,4 +55,42 @@ public class Surface extends GraphicObject {
 		}
 		app_.line(getX(), getY(), x2, y2);
 	}
+	
+	/**
+	 * only colliding if a corner of the other hitbox is touching this hitbox somewhere,
+	 * so if any corner of the other hitbox isInside this one, the boxes are colliding.
+	 * @param other
+	 * @return returns true when the other hitbox is touching this hitbox with any corner.
+	 */
+	public boolean isColliding(Hitbox other) {
+		if(		isInside(other.getXMin(), other.getYMin()) ||
+				isInside(other.getXMin(), other.getYMax()) ||
+				isInside(other.getXMax(), other.getYMin()) ||
+				isInside(other.getXMax(), other.getYMax())) {
+			return true;
+		}else return false;
+	}
+	
+	public boolean isInside(float x, float y) {
+		//which x, y coord of this line is bigger, which is smaller?
+		float biggerX, biggerY, smallerX, smallerY;
+		if(getX()>=getX2()) {
+			biggerX = getX();
+			smallerX = getX2();
+		}else {
+			biggerX = getX2();
+			smallerX = getX();
+		}
+		
+		if(getY()>=getY2()) {
+			biggerY = getY();
+			smallerY = getY2();
+		}else {
+			biggerY = getY2();
+			smallerY = getY();
+		}
+		if(x > smallerX && x < biggerX && y > smallerY && y < biggerY) {
+			return true;
+		}else return false;
+	}
 }

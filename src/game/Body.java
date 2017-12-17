@@ -18,14 +18,13 @@ public class Body extends GraphicObject{
 	boolean reachedLastFrame;
 	AnimState state;
 	Animations anims;
-	float torsoSize = 8f;
-	Hitbox hitbox;
-	float hitboxAngle = PApplet.PI/4;
+	float torsoSize;
 	
-	public Body(String animFile, int numLimbs_, int limbJoints_) {
+	public Body(String animFile, int numLimbs_, int limbJoints_, float torsoSize_) {
 		numLimbs = numLimbs_;
 		limbJoints = limbJoints_;
 		KeyFrame start;
+		torsoSize = torsoSize_;
 		
 		try {
 			anims = new Animations(animFile);
@@ -71,11 +70,6 @@ public class Body extends GraphicObject{
 		}
 		
 		jumpTo(0);
-		float xMin = -(torsoSize/2);
-		float xMax = (torsoSize/2);
-		float yMin = -(torsoSize/2)-6.5f;
-		float yMax = (torsoSize/2);
-		hitbox = new Hitbox(xMin, yMin, xMax, yMax);
 		torso = new Torso(torsoSize);
 		
 	}
@@ -109,10 +103,6 @@ public class Body extends GraphicObject{
 
 		app_.noStroke();
 		torso.draw();
-		app_.pushMatrix();
-		app_.rotate(hitboxAngle);
-		hitbox.draw();
-		app_.popMatrix();
 		for(int i = 0; i<numLimbs; i++)
 			limbs.get(i).draw();
 		app_.popMatrix();

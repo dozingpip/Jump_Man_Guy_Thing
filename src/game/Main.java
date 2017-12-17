@@ -13,6 +13,7 @@ public class Main extends PApplet implements ApplicationConstants{
 	private float animStart =0;
 	private long frame = 0L;
 	int currentEditingFrame = 1;
+	boolean grounded = false;
 	
 	public void settings() 
 	{
@@ -56,6 +57,11 @@ public class Main extends PApplet implements ApplicationConstants{
 		}
 		
 		testPlatform.setAngle(testPlatform.getAngle() + PI/1024);
+		if(testPlatform.checkColliding(player)) {
+			grounded = true;
+		}else {
+			grounded = false;
+		}
 		
 		float t = millis()-animStart;
 		
@@ -76,27 +82,33 @@ public class Main extends PApplet implements ApplicationConstants{
 	}
 	
 	public void keyPressed() {
+		
+		animStart = millis();
+		player.move(key);
+		println(key);
+		/*
 		switch(key) {
 			case 'w': case 'd': case 'a': 
 				animStart = millis();
 				player.move(key);
 				break;
-		}
+		}*/
 	}
 	
 	public void keyReleased() {
 		switch(key) {
-		case 'w': case 'd': case 'a': 
-			animStart = millis();
-			player.stop(key);
-			break;
-//		case '[':
-//			testPlatform.setAngle(testPlatform.getAngle() - PI/16);
-//			break;
-//		case ']':
-//			testPlatform.setAngle(testPlatform.getAngle() + PI/16);
-//			break;
-	}
+			//case 'w': case 'd': case 'a': 
+	//		case '[':
+	//			testPlatform.setAngle(testPlatform.getAngle() - PI/16);
+	//			break;
+	//		case ']':
+	//			testPlatform.setAngle(testPlatform.getAngle() + PI/16);
+	//			break;
+			default:
+				//animStart = millis();
+				//player.stop(key);
+				break;
+		}
 	}
 	
 	public void setupGraphicClasses_()
