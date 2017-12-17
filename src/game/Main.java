@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 
 public class Main extends PApplet implements ApplicationConstants{
@@ -12,8 +14,8 @@ public class Main extends PApplet implements ApplicationConstants{
 	private float lastTime;
 	private float animStart =0;
 	private long frame = 0L;
-	int currentEditingFrame = 1;
 	boolean grounded = false;
+	ArrayList<Character> keysPressed;
 	
 	public void settings() 
 	{
@@ -29,10 +31,12 @@ public class Main extends PApplet implements ApplicationConstants{
 		
 //		testPlatform = new Platform(0, 0, 0, new Surface[]{new Surface(-10, -5, 20, 0), new Surface(4, 5, 8, 7*PI/5)});
 		testPlatform = new Platform(0, 0, PI/4, new Surface(-10, -2.5f, 20, 0), new float[] {5, 20, 5}, new float[] {PI/2, PI/2, PI/2});
+		keysPressed = new ArrayList<Character>();
 	}
 	
 	public void draw() 
 	{
+		
 		frame++;
 		if (frame % 5 == 0) {
 			background(167);
@@ -48,7 +52,7 @@ public class Main extends PApplet implements ApplicationConstants{
 			strokeWeight(0.2f);
 			line(WORLD_X_MIN, 0, WORLD_X_MAX, 0);
 			
-			testPlatform.draw();
+			//testPlatform.draw();
 						
 			player.draw();
 			
@@ -57,16 +61,17 @@ public class Main extends PApplet implements ApplicationConstants{
 		}
 		
 		testPlatform.setAngle(testPlatform.getAngle() + PI/1024);
-		if(testPlatform.checkColliding(player)) {
-			grounded = true;
-		}else {
-			grounded = false;
-		}
+		//testPlatform.checkColliding(player);
 		
 		float t = millis()-animStart;
 		
 		if (animate)
 		{
+			if(keysPressed.isEmpty()) {
+				player.stop();
+			}else {
+				player.move(keysPressed);
+			}
 			//	time in seconds since last update: (t-lastTime_)*0.001f
 			float dt = (t-lastTime)*0.001f;
 			
@@ -82,33 +87,15 @@ public class Main extends PApplet implements ApplicationConstants{
 	}
 	
 	public void keyPressed() {
-		
-		animStart = millis();
-		player.move(key);
-		println(key);
-		/*
-		switch(key) {
-			case 'w': case 'd': case 'a': 
-				animStart = millis();
-				player.move(key);
-				break;
-		}*/
+		if(!keysPressed.contains(key)) {
+			animStart = millis();
+			keysPressed.add(key);
+		}
 	}
 	
 	public void keyReleased() {
-		switch(key) {
-			//case 'w': case 'd': case 'a': 
-	//		case '[':
-	//			testPlatform.setAngle(testPlatform.getAngle() - PI/16);
-	//			break;
-	//		case ']':
-	//			testPlatform.setAngle(testPlatform.getAngle() + PI/16);
-	//			break;
-			default:
-				//animStart = millis();
-				//player.stop(key);
-				break;
-		}
+		animStart = millis();
+		keysPressed.remove(keysPressed.indexOf(key));
 	}
 	
 	public void setupGraphicClasses_()

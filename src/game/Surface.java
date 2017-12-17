@@ -72,25 +72,14 @@ public class Surface extends GraphicObject {
 	}
 	
 	public boolean isInside(float x, float y) {
-		//which x, y coord of this line is bigger, which is smaller?
-		float biggerX, biggerY, smallerX, smallerY;
-		if(getX()>=getX2()) {
-			biggerX = getX();
-			smallerX = getX2();
-		}else {
-			biggerX = getX2();
-			smallerX = getX();
-		}
 		
-		if(getY()>=getY2()) {
-			biggerY = getY();
-			smallerY = getY2();
-		}else {
-			biggerY = getY2();
-			smallerY = getY();
-		}
-		if(x > smallerX && x < biggerX && y > smallerY && y < biggerY) {
-			return true;
-		}else return false;
+		float dx = x - getX(), dy = y - getY();
+		float ca = PApplet.cos(getAngle()), sa = PApplet.sin(getAngle());
+//		float ca = (float) Math.cos(angle_), sa = (float) Math.sin(angle_);
+		
+		float rdx = ca*dx + sa*dy;
+		float rdy = -sa*dx + ca*dy;
+		
+		return ((rdx >= 0) && (rdx <= length_) && (rdy >= 0) && (rdy <=1f));
 	}
 }

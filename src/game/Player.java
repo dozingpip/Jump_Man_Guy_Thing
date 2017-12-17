@@ -1,12 +1,14 @@
 package game;
 
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 
 public class Player extends GraphicObject{
 	Body body;
 	float x, y;
 	int health = 5;
-	private float moveIncrement = 1f;
+	private float moveIncrement = 0.05f;
 	String playerAnimFile = "player.txt";
 	Hitbox hitbox;
 	float torsoSize = 8f;
@@ -52,7 +54,10 @@ public class Player extends GraphicObject{
 	public void move(char k) {
 		switch(k) {
 			case 'w':
-				body.jump();
+				moveUp();
+				break;
+			case 's':
+				moveDown();
 				break;
 			case 'a':
 				body.walk();
@@ -65,18 +70,19 @@ public class Player extends GraphicObject{
 		}
 	}
 	
-	public void stop(char k) {
-		switch(k) {
-			case 'w':
-				body.idle();
-				break;
-			case 'a':
-				body.idle();
-				break;
-			case 'd':
-				body.idle();
-				break;
+	public void move(ArrayList<Character> keys) {
+		for(Character c: keys) {
+			move(c);
 		}
+	}
+	
+	public void stop() {
+		body.idle();
+	}
+	
+	public void fall() {
+		y-=0.05f;
+		hitbox.incY(-0.05f);
 	}
 	
 	public void moveUp() {

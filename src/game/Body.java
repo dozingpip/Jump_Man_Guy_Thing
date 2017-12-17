@@ -75,8 +75,10 @@ public class Body extends GraphicObject{
 	}
 	
 	public void setState(AnimState state_) {
-		state = state_;
-		keys = getStateAnim();
+		if(state!= state_) {
+			state = state_;
+			keys = getStateAnim();
+		}
 	}
 	
 	public ArrayList<KeyFrame> getStateAnim(){
