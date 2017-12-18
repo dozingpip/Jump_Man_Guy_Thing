@@ -35,12 +35,34 @@ public class Hitbox extends GraphicObject{
 	 * @return returns true when the other hitbox is touching this hitbox with any corner.
 	 */
 	public boolean isColliding(Hitbox other) {
-		if(		isInside(other.getXMin(), other.getYMin()) ||
+		if(		//is other hitbox's bottom left corner inside?
+				isInside(other.getXMin(), other.getYMin()) ||
+				//is other hitbox's bottom right corner inside?
 				isInside(other.getXMin(), other.getYMax()) ||
+				//is other hitbox's top left corner inside?
 				isInside(other.getXMax(), other.getYMin()) ||
+				//is other hitbox's top right corner inside?
 				isInside(other.getXMax(), other.getYMax())) {
 			return true;
 		}else return false;
+	}
+	
+	/**
+	 * Is the other hitbox colliding from the top?
+	 * @param other
+	 * @return
+	 */
+	public boolean hitTop(Hitbox other) {
+		//is other hitbox's bottom left corner inside? but not top left corner?
+		//is other hitbox's bottom right corner inside? but not top right corner?
+		if(		(isInside(other.getXMin(), other.getYMin()) &&
+				!isInside(other.getXMax(), other.getYMin())) ||
+				(isInside(other.getXMin(), other.getYMax()) &&
+				!isInside(other.getXMax(), other.getYMax()))
+			) {
+			return true;
+		}else return false;
+		
 	}
 	
 	public float getXMin() {

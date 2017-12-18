@@ -13,7 +13,7 @@ public class Limb extends GraphicObject{
 	public final static float LINK_THICKNESS = 0.6f;
 	float linkColor = LINK_COLOR;
 	
-	private final float H = 3;
+	private float linkLength;
 	
 	private int numJoints;
 //	float x, y;
@@ -24,10 +24,11 @@ public class Limb extends GraphicObject{
 	 * can get the number of joints just by looking at how long the theta array is.
 	 * @param jointAngles
 	 */
-	public Limb(ArrayList<Float> jointAngles, float x_, float y_) {
+	public Limb(ArrayList<Float> jointAngles, float x_, float y_, float linkLength_) {
 		super(x_, y_, 0);
 		theta = jointAngles;
 		numJoints = theta.size();
+		linkLength = linkLength_;
 	}
 	
 	public void draw() {
@@ -42,8 +43,8 @@ public class Limb extends GraphicObject{
 			app_.noFill();
 			app_.stroke(linkColor);
 			app_.strokeWeight(LINK_THICKNESS);
-			app_.line(0, 0, 0, H);
-			app_.translate(0, H);
+			app_.line(0, 0, 0, linkLength);
+			app_.translate(0, linkLength);
 		}
 		app_.popMatrix();
 	}

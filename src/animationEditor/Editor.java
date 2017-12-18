@@ -89,7 +89,7 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 			popMatrix();
 		}
 		
-		float t = millis()-timeReset;
+		float t = millis();
 		
 		if (animate)
 		{
@@ -396,32 +396,19 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 		animate = false;
 		startScreen = false;
 		editAnimation = true;
-		keyframes = new ArrayList<KeyFrame>();
-		ArrayList<ArrayList<Float>> limbAngles = new ArrayList<>();
-		ArrayList<Float> startJointPos0 = new ArrayList<Float>();
-		startJointPos0.add(-2.3561945f);
-		startJointPos0.add(0f);
-		limbAngles.add(startJointPos0);
-		ArrayList<Float> startJointPos1 = new ArrayList<Float>();
-		startJointPos1.add(-1.7671458f);
-		startJointPos1.add(0f);
-		limbAngles.add(startJointPos1);
-		ArrayList<Float> startJointPos2 = new ArrayList<Float>();
-		startJointPos2.add(3.3379426f);
-		startJointPos2.add(0f);
-		limbAngles.add(startJointPos2);
-		ArrayList<Float> startJointPos3 = new ArrayList<Float>();
-		startJointPos3.add(3.926991f);
-		startJointPos3.add(0f);
-		limbAngles.add(startJointPos3);
-		
-		start = new KeyFrame(0, 0, 0, -0.7853982f, limbAngles);
-		keyframes.add(start);
+		try {
+			keyframes = FileInOutMachine.getKeyframesFromFile("Animations/default.txt");
+			jumpTo(0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Default file also not found. :(");
+		}
 		initializeEverything();
 	}
 	
 	public void initializeEverything() {
-		body = new Body("Animations/player.txt", limbsOnBody, jointsOnLimbs, 8);
+		body = new Body(limbsOnBody, jointsOnLimbs, 8);
+		limbSelected = 1;
 		selectLimb(0);
 		lastTime = millis();
 		initAnimUI();

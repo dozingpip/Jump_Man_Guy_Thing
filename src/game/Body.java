@@ -1,8 +1,10 @@
 package game;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+import animationEditor.FileInOutMachine;
 import animationEditor.KeyFrame;
 import processing.core.PApplet;
 
@@ -34,43 +36,49 @@ public class Body extends GraphicObject{
 						+ "body: joints = "+ limbJoints+", anim file: joints = "+ anims.getNumJoints());
 			}
 			setState(AnimState.IDLE);
-			start = keys.get(0);
 		} catch (IOException e) {
 			System.out.println("Failed opening specified file, so using default file.");
-			keys = new ArrayList<KeyFrame>();
-			
-			//default position of the body.
-			ArrayList<ArrayList<Float>> limbAngles = new ArrayList<>();
-			ArrayList<Float> startJointPos0 = new ArrayList<Float>();
-			startJointPos0.add(-2.3561945f);
-			startJointPos0.add(0f);
-			limbAngles.add(startJointPos0);
-			ArrayList<Float> startJointPos1 = new ArrayList<Float>();
-			startJointPos1.add(-1.7671458f);
-			startJointPos1.add(0f);
-			limbAngles.add(startJointPos1);
-			ArrayList<Float> startJointPos2 = new ArrayList<Float>();
-			startJointPos2.add(3.3379426f);
-			startJointPos2.add(0f);
-			limbAngles.add(startJointPos2);
-			ArrayList<Float> startJointPos3 = new ArrayList<Float>();
-			startJointPos3.add(3.926991f);
-			startJointPos3.add(0f);
-			limbAngles.add(startJointPos3);
-			start = new KeyFrame(0, 0, 0, -0.7853982f, limbAngles);
-			keys.add(start);
+			try {
+				keys = FileInOutMachine.getKeyframesFromFile("Animations/default.txt");
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				System.out.println("Default file also not found. :(");
+			}
 		}
+		start = keys.get(0);
 		t = 0;
 		reachedLastFrame = false;
 
 		limbs = new ArrayList<Limb>();
 		for( int i = 0; i<numLimbs; i++) {
-			limbs.add(new Limb(start.getLimbsJoints().get(i), (torsoSize/2)*PApplet.cos(i*2*PApplet.PI/numLimbs), (torsoSize/2)*PApplet.sin(i*2*PApplet.PI/numLimbs)));
+			limbs.add(new Limb(start.getLimbsJoints().get(i), 
+					(torsoSize/2)*PApplet.cos(i*2*PApplet.PI/numLimbs),
+					(torsoSize/2)*PApplet.sin(i*2*PApplet.PI/numLimbs),
+					torsoSize/2));
 		}
 		
 		jumpTo(0);
 		torso = new Torso(torsoSize);
+	}
+	
+	public Body(int numLimbs_, int limbJoints_, float torsoSize_) {
+		numLimbs = numLimbs_;
+		limbJoints = limbJoints_;
+		torsoSize = torsoSize_;
+		limbs = new ArrayList<Limb>();
+		ArrayList<Float> j = new ArrayList<Float>();
+		for(int k = 0; k<limbJoints; k++) {
+			j.add(0f);
+		}
 		
+		for( int i = 0; i<numLimbs; i++) {
+			limbs.add(new Limb(j, 
+					(torsoSize/2)*PApplet.cos(i*2*PApplet.PI/numLimbs),
+					(torsoSize/2)*PApplet.sin(i*2*PApplet.PI/numLimbs),
+					torsoSize/2));
+		}
+		torso = new Torso(torsoSize);
 	}
 	
 	public void setState(AnimState state_) {
@@ -156,13 +164,10 @@ public class Body extends GraphicObject{
 			a = keys.get(keys.size()-1).getA();
 			for(int i = 0; i<numLimbs; i++)
 				for(int j = 0; j<limbJoints; j++)
-					limbs.get(i).setTheta(j, keys.get(keys.size()-
-											 1).getLimbsJoints().get(i).get(j));
+					limbs.get(i).setTheta(j, keys.get(keys.size()-1).getLimbsJoints().get(i).get(j));
 			reachedLastFrame = true;
 			//if the animation is not the idle one, stop playing when done.  If it is the idle animation, just restart it.
-			if(state==AnimState.JUMP)
-				setState(AnimState.IDLE);
-			else
+			if(state!=AnimState.JUMP)
 				t = 0;
 		}
 		
@@ -199,6 +204,14 @@ public class Body extends GraphicObject{
 
 	public void jump() {
 		setState(AnimState.JUMP);
+	}
+	
+	public void die() {
+		setState(AnimState.DYING);
+	}
+	
+	public void hurt() {
+		setState(AnimState.HURT);
 	}
 	
 	public void moveUp() {

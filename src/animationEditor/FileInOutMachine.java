@@ -54,8 +54,8 @@ public class FileInOutMachine {
 		String content = readFile(filename, StandardCharsets.UTF_8);
 		String[] lines = content.replaceAll("\t","").split("\\r?\\n");
 		
-		int numLimbs = Integer.parseInt(lines[1]);
-		int numJoints = Integer.parseInt(lines[2]);
+		int numLimbs = Integer.parseInt(lines[0]);
+		int numJoints = Integer.parseInt(lines[1]);
 		
 		//the plus 2 is for: 
 		// 1st line has the time, x, y, and angle values
@@ -66,13 +66,13 @@ public class FileInOutMachine {
 		
 		// the first line related to whatever animation we're looking at. (would be the
 		// animation length/ number of keyframes)
-		int animStartLine = 4;
+		int animStartLine = 3;
 		int numFrames = Integer.parseInt(lines[animStartLine]);
 		ArrayList<KeyFrame> anAnimation = new ArrayList<>();
 		for(int j = 0; j<numFrames; j++) {
 			int keyframeStartLine = animStartLine+1+j*numLinesPerKeyframe;
 			String[] items = lines[keyframeStartLine].split(",");
-			int t = Integer.parseInt(items[0]);
+			float t = Float.parseFloat(items[0]);
 			float x = Float.parseFloat(items[1]);
 			float y = Float.parseFloat(items[2]);
 			float a = Float.parseFloat(items[3]);

@@ -13,8 +13,8 @@ public class Main extends PApplet implements ApplicationConstants{
 	private boolean animate = true;
 	private float lastTime;
 	private long frame = 0L;
-	boolean grounded = false;
 	ArrayList<Character> keysPressed;
+	ArrayList<Enemy> enemies;
 	
 	public void settings() 
 	{
@@ -31,6 +31,8 @@ public class Main extends PApplet implements ApplicationConstants{
 //		testPlatform = new Platform(0, 0, 0, new Surface[]{new Surface(-10, -5, 20, 0), new Surface(4, 5, 8, 7*PI/5)});
 		testPlatform = new Platform(0, 0, PI/4, new Surface(-10, -2.5f, 20, 0), new float[] {5, 20, 5}, new float[] {PI/2, PI/2, PI/2});
 		keysPressed = new ArrayList<Character>();
+		enemies = new ArrayList<Enemy>();
+		//enemies.add(new Enemy("", 2, 2, 4f, 2, 1));
 	}
 	
 	public void draw() 
@@ -52,6 +54,12 @@ public class Main extends PApplet implements ApplicationConstants{
 			line(WORLD_X_MIN, 0, WORLD_X_MAX, 0);
 			
 			//testPlatform.draw();
+			
+			for(Enemy e: enemies) {
+				if(e.isAlive() && e.onScreen(WORLD_X_MIN, WORLD_Y_MIN, WORLD_X_MAX, WORLD_Y_MAX)) {
+					e.draw();
+				}
+			}
 						
 			player.draw();
 			
@@ -78,6 +86,12 @@ public class Main extends PApplet implements ApplicationConstants{
 				player.update(dt);
 			}else {
 				animate = false;
+			}
+			
+			for(Enemy e: enemies) {
+				if(e.isAlive() && e.onScreen(WORLD_X_MIN, WORLD_Y_MIN, WORLD_X_MAX, WORLD_Y_MAX)) {
+					e.update(dt);
+				}
 			}
 		}
 
