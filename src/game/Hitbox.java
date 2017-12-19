@@ -1,29 +1,40 @@
 package game;
 
-import processing.core.PApplet;
-
+/**
+ * The box used to determine what some object this is attached to may be colliding with (the floor, other objects with hitboxes, etc)
+ * @author Steph and Thomas
+ *
+ */
 public class Hitbox extends GraphicObject{
 	//relative to object's center
-	float xMin, xMax, yMin, yMax, angle;
-	float width, height;
+	private float xMin, xMax, yMin, yMax;
+	private float width, height;
 	
-	public Hitbox(float xMin_, float yMin_, float xMax_, float yMax_, float angle_) {
+	/**
+	 * 
+	 * @param xMin_ leftmost x coord
+	 * @param yMin_ lowermost y coord
+	 * @param xMax_ rightmost x coord
+	 * @param yMax_ uppermost y coord
+	 */
+	public Hitbox(float xMin_, float yMin_, float xMax_, float yMax_) {
 		xMin = xMin_;
 		xMax = xMax_;
 		yMin = yMin_;
 		yMax = yMax_;
-		angle = angle_;
 		width = xMax-xMin;
 		height = yMax-yMin;
 	}
 	
+	/**
+	 * draw the hitbox
+	 */
 	public void draw() {
 		app_.pushMatrix();
 		app_.stroke(0);
 		app_.strokeWeight(0.2f);
 		app_.noFill();
 		app_.translate(xMin, yMin);
-		app_.rotate(angle);
 		app_.rect(0, 0, width, height);
 		app_.popMatrix();
 	}
@@ -62,60 +73,65 @@ public class Hitbox extends GraphicObject{
 			) {
 			return true;
 		}else return false;
-		
 	}
 	
+	/**
+	 * 
+	 * @return leftmost x coord
+	 */
 	public float getXMin() {
 		return xMin;
 	}
 	
+	/**
+	 * 
+	 * @return lowermost y coord
+	 */
 	public float getYMin() {
 		return yMin;
 	}
 	
+	/**
+	 * 
+	 * @return rightmost x coord
+	 */
 	public float getXMax() {
 		return xMax;
 	}
 	
+	/**
+	 * 
+	 * @return uppermost y coord
+	 */
 	public float getYMax() {
 		return yMax;
 	}
 	
+	/**
+	 * 
+	 * @return width of the hitbox
+	 */
 	public float getW() {
 		return width;
 	}
 	
+	/**
+	 * 
+	 * @return height of the hitbox
+	 */
 	public float getH() {
 		return height;
 	}
-	
-	public void incX(float x) {
-		xMin+=x;
-		xMax+=x;
-	}
-	
-	public void incY(float y) {
-		yMin+=y;
-		yMax+=y;
-	}
 
-	/**
-	 * Tells whether the point whose coordinates are passed is inside this object
+	/** Tells whether the point whose coordinates are passed is inside this object
 	 * 
 	 * @param x  x coordinate of the point (in world coordinates)
 	 * @param y x coordinate of the point (in world coordinates)
 	 * @return true if (x, y) is inside this object
 	 */
 	public boolean isInside(float x, float y)
-	{	
-		float dx = x - getXMin(), dy = y - getYMin();
-		float ca = PApplet.cos(angle), sa = PApplet.sin(angle);
-//		float ca = (float) Math.cos(angle_), sa = (float) Math.sin(angle_);
-		
-		float rdx = ca*dx + sa*dy;
-		float rdy = -sa*dx + ca*dy;
-		
-		return ((rdx >= 0) && (rdx <= getW()) && (rdy >= 0) && (rdy <= getH()));
+	{		
+		return ((x >= getX()) && (x <= getX() + getW()) && (y >= getY()) && (y <= getY() + getH()));
 	}
 
 }

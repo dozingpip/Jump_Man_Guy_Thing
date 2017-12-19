@@ -2,17 +2,22 @@ package animationEditor;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Steph and Thomas
+ *
+ */
 public class KeyFrame {
 	float t, x, y, a;
 	ArrayList<ArrayList<Float>> limbs;
 	
 	/**
-	 * The things every keyframe needs to keep track of.
-	 * @param t_
-	 * @param x_
-	 * @param y_
-	 * @param a_
-	 * @param limbs_
+	 * Initialize the keyframe (with limbs)
+	 * @param t_ time at which to run this keyframe
+	 * @param x_ x coord of the object this keyframe is for
+	 * @param y_ y coord of the object this keyframe is for
+	 * @param a_ angle of the object this keyframe is for
+	 * @param limbs_ arraylist of the angles for all the joints on all the limbs
 	 */
 	public KeyFrame(float t_, float x_, float y_, float a_,
 			ArrayList<ArrayList<Float>> limbs_) {
@@ -23,6 +28,13 @@ public class KeyFrame {
 		limbs = limbs_;
 	}
 	
+	/**
+	 * Can initialize a keyframe for something that has no limbs
+	 * @param t_ time at which to run this keyframe
+	 * @param x_ x coord of the object this keyframe is for
+	 * @param y_ y coord of the object this keyframe is for
+	 * @param a_ angle of the object this keyframe is for
+	 */
 	public KeyFrame(float t_, float x_, float y_, float a_) {
 		t = t_;
 		x = x_;
@@ -30,23 +42,42 @@ public class KeyFrame {
 		a = a_;
 	}
 	
+	/**
+	 * 
+	 * @return time to run this animation at
+	 */
 	public float getT() {
 		return t;
 	}
 	
+	/**
+	 * 
+	 * @return x coord to put the object at when this keyframe happens
+	 */
 	public float getX() {
 		return x;
 	}
 	
+	/**
+	 * 
+	 * @return y coord to put the object at when this keyframe happens
+	 */
 	public float getY() {
 		return y;
 	}
 	
-
+	/**
+	 * 
+	 * @return angle to put the object at when this keyframe happens
+	 */
 	public float getA() {
 		return a;
 	}
 	
+	/**
+	 * 
+	 * @return list of all the joints of all the limbs
+	 */
 	public ArrayList<ArrayList<Float>> getLimbsJoints(){
 		return limbs;
 	}

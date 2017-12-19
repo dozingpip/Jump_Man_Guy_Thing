@@ -9,13 +9,23 @@ import java.util.ArrayList;
 
 import animationEditor.KeyFrame;
 
+/**
+ * For storing the different kinds of animation an entity might need.
+ * 
+ * @author Steph and Thomas
+ *
+ */
 public class Animations {
-
 	private ArrayList<KeyFrame> idleAnim, walkAnim, jumpAnim, hurtAnim, dyingAnim;
-	static int idle_idx = 0, walk_idx = 1, jump_idx = 2, hurt_idx = 3, dying_idx = 4;
-	int numLimbs, numJoints;
+	// represents the order in which the individual animations are stored in the txt file.
+	private static int idle_idx = 0, walk_idx = 1, jump_idx = 2, hurt_idx = 3, dying_idx = 4;
+	private int numLimbs, numJoints;
 	
-	
+	/**
+	 * Reads the file with the specified name in the Animations folder.
+	 * @param filename
+	 * @throws IOException
+	 */
 	public Animations(String filename) throws IOException {
 		getKeyframesFromFile("Animations/"+filename, StandardCharsets.UTF_8);
 	}
@@ -76,11 +86,14 @@ public class Animations {
 				}else
 					anAnimation.add(new KeyFrame(t, x, y, a));
 			}
+			//we can finally add that list of keyframes to the list of lists of keyframes
 			allAnims.add(anAnimation);
+			//What line does the next animation start at?
 			animStartLine+=numLinesForThisAnimation;
-			//System.out.println("Next anim starts at "+ animStartLine);
 		}
 		
+		// depending on how many animations the file has (some may not have hurt or jump or dying animation), 
+		//  set up the relevant animations
 		if(numAnimations>4) {
 			dyingAnim = allAnims.get(dying_idx);
 		}
@@ -112,30 +125,58 @@ public class Animations {
 		return new String(encoded, encoding);
 	}
 	
+	/**
+	 * get idle animation
+	 * @return
+	 */
 	public ArrayList<KeyFrame> getIdle() {
 		return idleAnim;
 	}
 	
+	/**
+	 * get walk animation
+	 * @return
+	 */
 	public ArrayList<KeyFrame> getWalk() {
 		return walkAnim;
 	}
 	
+	/**
+	 * get jump animation
+	 * @return
+	 */
 	public ArrayList<KeyFrame> getJump() {
 		return jumpAnim;
 	}
 	
+	/**
+	 * get hurt animation
+	 * @return
+	 */
 	public ArrayList<KeyFrame> getHurt() {
 		return hurtAnim;
 	}
 	
+	/**
+	 * get dying animation
+	 * @return
+	 */
 	public ArrayList<KeyFrame> getDying() {
 		return dyingAnim;
 	}
 	
+	/**
+	 *  get the number of limbs specified in the animation file.
+	 * @return
+	 */
 	public int getNumLimbs() {
 		return numLimbs;
 	}
 	
+	/**
+	 *  get the number of joints specified in the animation file.
+	 * @return
+	 */
 	public int getNumJoints() {
 		return numJoints;
 	}

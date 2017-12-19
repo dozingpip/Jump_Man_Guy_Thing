@@ -1,15 +1,22 @@
 package game;
 
 public class Torso extends GraphicObject{
-	float size;
+	private float size;
 	
 	//body color
-	public final static int COLOR = 0xA0F7BA00;
+	private final static int COLOR = 0xA0F7BA00;
 	
+	/**
+	 * 
+	 * @param size_ diameter of the torso
+	 */
 	public Torso(float size_) {
 		size = size_;
 	}
 	
+	/**
+	 * draw the torso
+	 */
 	public void draw() {
 		app_.pushMatrix();
 		app_.fill(COLOR);
