@@ -35,7 +35,7 @@ public class Main extends PApplet implements ApplicationConstants{
 		testPlatform = new Platform(0, 0, PI/4, new Surface(-10, -2.5f, 20, 0), new float[] {5, 20, 5}, new float[] {PI/2, PI/2, PI/2});
 		keysPressed = new ArrayList<Character>();
 		enemies = new ArrayList<Enemy>();
-//		enemies.add(new Enemy("", 2, 2, 4f, 2, 1));
+		enemies.add(new Enemy("default_spider.txt", 2, 2, 4f, 2, 1, 0.05f));
 		levels = new ArrayList<Level>();
 		levels.add(new Level(30, new Platform[] {testPlatform, new Platform(0, 0, 0, new Surface(-5, -10, 80, 0), new float[] {20, 30, 14}, new float[] {PI/16, PI/8, PI/15} )}, 10, 2));
 		setCurrentLevel(0);
@@ -44,13 +44,7 @@ public class Main extends PApplet implements ApplicationConstants{
 	}
 	
 	public void draw() 
-	{		
-				
-		
-		
-//		System.out.println("AFTER " + player.getX());
-		
-		// Drawing
+	{
 		if (camX > offsetMaxX)
 		    camX = offsetMaxX;
 		else if (camX < offsetMinX)
@@ -58,8 +52,56 @@ public class Main extends PApplet implements ApplicationConstants{
 		
 		camX = player.getX();
 		
-//		println("CAM ");
+		actuallyDrawing();
 		
+		animate();
+		
+	}
+	
+	public void animate() {
+		float t = millis();
+		
+		if (animate)
+		{
+			//	time in seconds since last update: (t-lastTime_)*0.001f
+			float dt = (t-lastTime)*0.001f;
+			
+			player.doGravity(dt);
+			
+			// Positional Movement
+			if(!keysPressed.isEmpty()) {
+				player.move(keysPressed, dt);
+			}else {
+				player.stop();
+			}
+			
+			// Collisions
+			for(Platform p: current.getPlatforms()) {
+				p.doCollision(player);
+			}
+//			for(Platform p : current.getPlatforms()) {
+//				p.doCollision(player);
+//			}
+			
+			player.doMove();
+			
+			if(player.isAlive()) {
+				player.update(dt);
+			}else {
+				animate = false;
+			}
+			
+			for(Enemy e: enemies) {
+				if(e.isAlive()) {
+					e.update(dt);
+				}
+			}
+		}
+
+		lastTime = t;
+	}
+	
+	public void actuallyDrawing() {
 		frame++;
 		if (frame % 5 == 0) {
 			background(167);
@@ -89,56 +131,6 @@ public class Main extends PApplet implements ApplicationConstants{
 			
 			popMatrix();
 		}
-		
-		//testPlatform.setAngle(testPlatform.getAngle() + PI/1024);
-//		testPlatform.checkColliding(player);
-		
-		
-		// Animating
-		float t = millis();
-		
-		
-		
-		if (animate)
-		{
-			//	time in seconds since last update: (t-lastTime_)*0.001f
-			float dt = (t-lastTime)*0.001f;
-			
-			player.doGravity(dt);
-			
-			// Positional Movement
-			if(!keysPressed.isEmpty()) {
-				player.move(keysPressed, dt);
-			}else {
-				player.stop();
-			}
-			
-			// Collisions
-			for(Platform p: current.getPlatforms()) {
-				p.doCollision(player);
-			}
-//			for(Platform p : current.getPlatforms()) {
-//				p.doCollision(player);
-//			}
-			
-//			System.out.println("BEFORE " + player.getX());
-			
-			player.doMove();
-			
-			if(player.isAlive()) {
-				player.update(dt);
-			}else {
-				animate = false;
-			}
-			
-			for(Enemy e: enemies) {
-				if(e.isAlive()) {
-					e.update(dt);
-				}
-			}
-		}
-
-		lastTime = t;
 	}
 	
 	public void setCurrentLevel(int index) {
