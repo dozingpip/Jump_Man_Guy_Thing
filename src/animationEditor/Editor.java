@@ -15,7 +15,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	
 	private Menu editAnimUI;
 	private Menu playAnimUI;
-	private Menu jumpToUI;
 	private Menu timeSelectUI;
 	private Menu startUI;
 	
@@ -23,21 +22,16 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	private boolean animate = false;
 	private float lastTime;
 	private long frame = 0L;
-	ArrayList<KeyFrame> keyframes;
-	int currentEditingFrame = 1;
-	KeyFrame start;
-	int limbSelected;
-	int jointSelected;
-	float buttonY = WORLD_Y_MIN+6f;
-	int jointsOnLimbs = 2;
-	int limbsOnBody = 2;
-	int timeSelected = 1;
-	boolean editAnimation = false;
-	boolean showJumpTo = false;
-	boolean startScreen = false;
-	float defaultFrameLength = 0.5f;
-	float timeReset = 0;
-	float frameSelectTime;
+	private ArrayList<KeyFrame> keyframes;
+	//private KeyFrame start;
+	private int limbSelected;
+	private float buttonY = WORLD_Y_MIN+6f;
+	private int jointsOnLimbs = 2;
+	private int limbsOnBody = 2;
+	private int timeSelected = 1;
+	private boolean editAnimation = false;
+	private boolean startScreen = false;
+	private float defaultFrameLength = 0.5f;
 	
 	
 	public void settings() 
@@ -80,9 +74,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 					editAnimUI.draw();
 				}else
 					playAnimUI.draw();
-	
-				if(showJumpTo)
-					jumpToUI.draw();
 				
 				timeSelectUI.draw();
 			}
@@ -112,18 +103,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	}
 	
 	/**
-	 * Wanted to add some UI for selecting specific joints in the case that there are more than
-	 *  2 and having it rely on keyboard controls would get messy, but didn't finish doing 
-	 *  that.
-	 * @param index
-	 * @param joint
-	 */
-	public void selectJoint(int index, int joint) {
-		limbSelected = index;
-		jointSelected = joint;
-	}
-	
-	/**
 	 * Selecting a limb for editing with keyboard controls
 	 * @param index
 	 */
@@ -144,7 +123,7 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 			//--------------------------------------
 			
 			case 'b':
-				FileInOutMachine.saveKeyFramesToFile(keyframes);
+				FileInOutMachine.saveKeyFramesToFile(keyframes, limbsOnBody, jointsOnLimbs);
 				break;
 			case 'n':
 				snapCurrent();
@@ -206,8 +185,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 				editAnimUI.checkIsInside(mouseXW, mouseYW);
 			}else
 				playAnimUI.checkIsInside(mouseXW, mouseYW);
-			if(showJumpTo)
-				jumpToUI.checkIsInside(mouseXW, mouseYW);
 		}
 		
 	}
@@ -242,7 +219,7 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	public void initAnimUI() {
 		ArrayList<Runnable> r = new ArrayList<Runnable>();
 		r.add(new Runnable() { public void run() {snapCurrent();}});
-		r.add(new Runnable() { public void run() {FileInOutMachine.saveKeyFramesToFile(keyframes);}});
+		r.add(new Runnable() { public void run() {FileInOutMachine.saveKeyFramesToFile(keyframes, limbsOnBody, jointsOnLimbs);}});
 		//r.add(new Runnable() { public void run() {decreaseTimeVal();}});
 		//r.add(new Runnable() { public void run() {increaseTimeVal();}});
 		r.add(new Runnable() { public void run() {playAnim(); resetAnim();}});
@@ -295,21 +272,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	}
 	
 	/**
-	 * The UI for jumping to any given saved keyframe (not currently using, 
-	 * because it doesn't get updated based on edits to the animation)
-	 */
-//	public void initJumpToUI() {
-//		ArrayList<String> buttonNames = new ArrayList<String>();
-//		ArrayList<Runnable> r = new ArrayList<Runnable>();
-//		for(int i = 0; i<keyframes.size(); i++) {
-//			buttonNames.add("frame "+ i);
-//			int frame = i;
-//			r.add(new Runnable() { public void run() {jumpTo(frame);}});
-//		}
-//		jumpToUI = new Menu(r, buttonNames, buttonY-3f, WORLD_WIDTH, 2f, WORLD_X_MIN);
-//	}
-	
-	/**
 	 * update the timekeeping button
 	 * @param time
 	 */
@@ -325,7 +287,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 		body.jumpTo(frame);
 		println("Jumping to frame "+ frame);
 		updateTime(keyframes.get(frame).getT());
-		frameSelectTime = keyframes.get(frame).getT();
 	}
 	
 	//placeholder for what happens when you press the time-keeping button
@@ -365,7 +326,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	 */
 	public void resetAnim() {
 		jumpTo(0);
-		timeReset = millis();
 		body.restartAnim();
 		animate = true;
 	}
@@ -412,7 +372,6 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 		lastTime = millis();
 		initAnimUI();
 		initPlayUI();
-//		initJumpToUI();
 		initTimeSelectUI();
 	}
 	
@@ -428,6 +387,9 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 		updateTime(timeSelected);
 	}
 	
+	/**
+	 * setup the graphic classes, namely graphic object
+	 */
 	public void setupGraphicClasses_()
 	{
 		if (GraphicObject.setup(this) != 1)

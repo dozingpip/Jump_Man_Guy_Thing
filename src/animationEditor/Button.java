@@ -2,19 +2,24 @@ package animationEditor;
 
 import game.GraphicObject;
 
+/**
+ * Button class to place a rectangle with words on it somewhere on the screen and have something happen when you click inside it
+ * @author Steph and Thomas
+ *
+ */
 public class Button extends GraphicObject{
-	String label;
-	float w, h;
-	Runnable clickFunction;
+	private String label;
+	private float w, h;
+	private Runnable clickFunction;
 	
 	/**
 	 * 
-	 * @param x
-	 * @param y
-	 * @param w_
-	 * @param h_
-	 * @param label_
-	 * @param func
+	 * @param x x coord of lower left corner of the button
+	 * @param y y coord of lower left corner of the button
+	 * @param w_ width of the button
+	 * @param h_ height of the button
+	 * @param label_ text to display on the button
+	 * @param func function that should be called when a button is pressed
 	 */
 	public Button(float x, float y, float w_, float h_, String label_, Runnable func) {
 		super(x, y, 0);
@@ -23,7 +28,10 @@ public class Button extends GraphicObject{
 		label = label_;
 		clickFunction = func;
 	}
-		
+	
+	/**
+	 * draw the button
+	 */
 	public void draw() {
 		app_.pushMatrix();
 		setFillingColor();
@@ -66,18 +74,32 @@ public class Button extends GraphicObject{
 		}
 	}
 	
+	/**
+	 * change the text to the specified string
+	 * @param newText what the text should change to
+	 */
 	public void changeText(String newText) {
 		label = newText;
 	}
 	
+	/**
+	 * @return what the text currently is
+	 */
 	public String getText() {
 		return label;
 	}
 	
+	/**
+	 * run the already specified click function when this button gets clicked
+	 */
 	public void onClick() {
 		clickFunction.run();
 	}
 	
+	/**
+	 * change the click function to the specified one instead
+	 * @param function specific function to change the click to
+	 */
 	public void setFunction(Runnable function) {
 		clickFunction = function;
 	}

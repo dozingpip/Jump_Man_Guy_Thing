@@ -17,12 +17,19 @@ public class FileInOutMachine {
 	/**
 	 * output the current state of the keyframes array to a text file with a name of the user's
 	 * choosing.
+	 * @param keyframes list of keyframes to save to file
+	 * @numLimbs number of limbs on the body these keyframes were made for
+	 * @numJoints number of joints per limb on the body these keyframes were made for
 	 */
-	public static void saveKeyFramesToFile(ArrayList<KeyFrame> keyframes) {
+	public static void saveKeyFramesToFile(ArrayList<KeyFrame> keyframes, float numLimbs, float numJoints) {
+		// ask the user what to save the keyframes to
 		String filename = pickFile();
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(filename, "UTF-8");
+			writer.println(numLimbs);
+			writer.println(numJoints);
+			writer.println("/n");
 			writer.println(keyframes.size());
 			for(int i = 0; i<keyframes.size(); i++) {
 				writer.println(keyframes.get(i).keyFrameOut());

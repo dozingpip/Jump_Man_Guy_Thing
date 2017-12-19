@@ -2,11 +2,16 @@ package animationEditor;
 
 import java.util.ArrayList;
 
+/**
+ * A collection of buttons and that should be grouped together when drawn
+ * @author Steph and Thomas
+ *
+ */
 public class Menu {
-	ArrayList<Runnable> r;
-	ArrayList<String> buttonNames;
-	float buttonY, menuWidth, buttonHeight, leftmost, rightmost;
-	ArrayList<Button> buttons;
+	private ArrayList<Runnable> r;
+	private ArrayList<String> buttonNames;
+	private float buttonY, menuWidth, buttonHeight, leftmost, rightmost;
+	private ArrayList<Button> buttons;
 	
 	/**
 	 * This class is for collection of buttons displayed for one purpose or another.
@@ -38,6 +43,9 @@ public class Menu {
 			}
 	}
 	
+	/**
+	 * draw all the buttons
+	 */
 	public void draw() {
 		for(Button button: buttons)
 			button.draw();
@@ -62,7 +70,7 @@ public class Menu {
 	 * If something with an individual button must be changed, can use this to get the button
 	 * and maybe do something with it.
 	 * @param index
-	 * @return
+	 * @return return the child button at the specified index in this menu's button arraylist.
 	 */
 	public Button get(int index) {
 		return buttons.get(index);

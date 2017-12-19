@@ -3,13 +3,13 @@ package animationEditor;
 import java.util.ArrayList;
 
 /**
- * 
+ * list of all the changes to be made this keyframe and when to do it
  * @author Steph and Thomas
  *
  */
 public class KeyFrame {
-	float t, x, y, a;
-	ArrayList<ArrayList<Float>> limbs;
+	private float t, x, y, a;
+	private ArrayList<ArrayList<Float>> limbs;
 	
 	/**
 	 * Initialize the keyframe (with limbs)
@@ -76,7 +76,7 @@ public class KeyFrame {
 	
 	/**
 	 * 
-	 * @return list of all the joints of all the limbs
+	 * @return list of  the angles for all the joints of all the limbs
 	 */
 	public ArrayList<ArrayList<Float>> getLimbsJoints(){
 		return limbs;
@@ -86,22 +86,6 @@ public class KeyFrame {
 	 * Put all the relevant information about thing keyframe in one long string so it can be
 	 * added to an output file.
 	 * Different separators for what level in the hierarchy of things it's at.
-	 * Hierarchical view:
-	 * t
-	 * x
-	 * y
-	 * a
-	 * limbs
-	 * 		limb0
-	 * 			joints
-	 * 				joint0
-	 * 					.
-	 * 					.
-	 * 					.
-	 * 		.
-	 * 		.
-	 * 		.
-	 * 
 	 * @return The string equivalent of this keyframe.
 	 */
 	public String keyFrameOut() {
