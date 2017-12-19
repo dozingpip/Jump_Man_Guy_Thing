@@ -106,15 +106,17 @@ public class Main extends PApplet implements ApplicationConstants{
 			}
 			
 			// Collisions
+			boolean sideHit = false;
 			for(Platform p: current.getPlatforms()) {
-				p.doCollision(player);
+				if(p.testCollision(player)) {
+					sideHit = true;
+				}
 			}
 //			for(Platform p : current.getPlatforms()) {
 //				p.doCollision(player);
 //			}
 			
 //			System.out.println("BEFORE " + player.getX());
-			
 			player.doMove();
 			
 			if(player.isAlive()) {

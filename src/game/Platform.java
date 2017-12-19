@@ -73,7 +73,9 @@ public class Platform extends GraphicObject{
 		}
 	}
 	
-	public void doCollision(Entity e) {
+	public boolean testCollision(Entity e) {
+		boolean sideHit = false;
+		boolean isHit = false;
 		Surface hit = null;
 		int corner = -1;
 		LineSide l = null;
@@ -99,6 +101,7 @@ public class Platform extends GraphicObject{
 				l = s.findSide(e.getXMax(), e.getYMax());
 			}
 			if (hit != null) {
+				isHit = true;
 				switch(corner) {
 					case 0:
 						e.moveBy(s.pushPerpendicular(e.nextXMin(), e.nextYMin(), l));
@@ -118,12 +121,20 @@ public class Platform extends GraphicObject{
 		}
 		boolean isGrounded = false;
 		for(Surface s: surfaces) {
-			
+			if (!isHit) {
+				if (  s.intersects(e.getXMin(), e.getYMin(), e.getXMax(), e.getYMin())
+				   || s.intersects(e.getXMax(), e.getYMin(), e.getXMax(), e.getYMax())
+				   || s.intersects(e.getXMax(), e.getYMax(), e.getXMin(), e.getYMax())
+				   || s.intersects(e.getXMin(), e.getYMax(), e.getXMin(), e.getYMin())) {
+					sideHit = true;
+				}
+			}
 			if (s.intersects(e.getXMin(), e.getYMin(), e.getXMin(), e.getYMin() - 0.1f) || s.intersects(e.getXMax(), e.getYMin(), e.getXMax(), e.getYMin() - 0.1f)) {
 				isGrounded = true;
 			}
 		}
 		e.setGrounded(isGrounded);
+		return sideHit;
 	}
 	
 	public boolean checkColliding(Player player) {
