@@ -94,30 +94,50 @@ public class Surface extends GraphicObject {
 		float additionalPop = 0;
 		float multiplier = 0;
 		float tempAngle = 0;
+		boolean isVertical = false;
 		switch(l) {
 			case POS:
 				slope = PApplet.tan(getAngle());
 				tempAngle = perpAngle % 2*PApplet.PI;
-				perpSlope = PApplet.tan(perpAngle);
+				if (tempAngle < PApplet.PI/2 + PApplet.PI/2000 && tempAngle > PApplet.PI/2 - PApplet.PI/2000) {
+					isVertical = true;
+					perpSlope = -10101010;
+				}
+				else {
+					perpSlope = PApplet.tan(tempAngle);
+				}
 				additionalPop = 0.05f;
 				System.out.println("IS POSITIVE");
 				break;
 			case NEG:
 				slope = PApplet.tan(getAngle());
 				tempAngle = perpAngle % 2*PApplet.PI;
-				perpSlope = PApplet.tan(perpAngle);
+				if (tempAngle < PApplet.PI/2 + PApplet.PI/2000 && tempAngle > PApplet.PI/2 - PApplet.PI/2000) {
+					isVertical = true;
+					perpSlope = -101010;
+				}
+				else {
+					perpSlope = PApplet.tan(tempAngle);
+				}
 				additionalPop = -0.05f;
 				System.out.println("IS NEGATIVE");
 				break;
 			default:
 				break;
 		}
-		float b1 = getY() - slope*getX();
-		float b2 = badY - perpSlope*badX;
-		diff[0] = -(b1-b2)/(slope-perpSlope);
-		diff[1] = perpSlope * diff[0] + b2;
-		diff[0] += additionalPop * PApplet.cos(perpAngle) - badX;
-		diff[1] += additionalPop * PApplet.sin(perpAngle) - badY;
+		if (!isVertical) {
+			System.out.println("PERP SLOPE " + perpSlope);
+			float b1 = getY() - slope*getX();
+			float b2 = badY - perpSlope*badX;
+			diff[0] = -(b1-b2)/(slope-perpSlope);
+			diff[1] = perpSlope * diff[0] + b2;
+			diff[0] += additionalPop * PApplet.cos(perpAngle) - badX;
+			diff[1] += additionalPop * PApplet.sin(perpAngle) - badY;
+		}
+		else {
+			diff[0] = 0;
+			diff[1] = getY() + additionalPop - badY;
+		}
 		
 		return diff;
 	}
