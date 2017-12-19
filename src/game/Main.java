@@ -44,13 +44,7 @@ public class Main extends PApplet implements ApplicationConstants{
 	}
 	
 	public void draw() 
-	{		
-				
-		
-		
-//		System.out.println("AFTER " + player.getX());
-		
-		// Drawing
+	{
 		if (camX > offsetMaxX)
 		    camX = offsetMaxX;
 		else if (camX < offsetMinX)
@@ -58,8 +52,12 @@ public class Main extends PApplet implements ApplicationConstants{
 		
 		camX = player.getX();
 		
-//		println("CAM ");
+		actuallyDraw();
+		animate();
 		
+	}
+	
+	public void actuallyDraw() {
 		frame++;
 		if (frame % 5 == 0) {
 			background(167);
@@ -89,16 +87,10 @@ public class Main extends PApplet implements ApplicationConstants{
 			
 			popMatrix();
 		}
-		
-		//testPlatform.setAngle(testPlatform.getAngle() + PI/1024);
-//		testPlatform.checkColliding(player);
-		
-		
-		// Animating
+	}
+	
+	public void animate() {
 		float t = millis();
-		
-		
-		
 		if (animate)
 		{
 			//	time in seconds since last update: (t-lastTime_)*0.001f
