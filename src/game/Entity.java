@@ -146,6 +146,14 @@ public abstract class Entity extends GraphicObject{
 		return hitbox;
 	}
 	
+	/**	Get whether the entity is touching the ground or not
+	 * 
+	 * @return
+	 */
+	public boolean checkGrounded() {
+		return isOnGround;
+	}
+	
 	/**
 	 * tell this entity whether or not it's on the ground (based on collisions and physics).
 	 * @param g
@@ -155,7 +163,7 @@ public abstract class Entity extends GraphicObject{
 	}
 	
 	/**
-	 * make gravity take effect, and move downward based on how much time has passed since the last update,
+	 * 	make gravity take effect, and move downward based on how much time has passed since the last update,
 	 *  while the entity is not grounded
 	 * @param dt
 	 */
@@ -163,7 +171,19 @@ public abstract class Entity extends GraphicObject{
 		if (!isOnGround) {
 			vy -= G * dt;
 		}
+		// Only set the y velocity to 0 for grounded entities if it is negative
+		else if (vy < 0) {
+			vy = 0;
+		}
 		nextPos[1] += vy * dt;
+	}
+	
+	/**	Sets the y velocity to the given value
+	 * 
+	 * @param vy_	The new y velocity
+	 */
+	public void setVY(float vy_) {
+		vy = vy_;
 	}
 	
 	/**
@@ -197,15 +217,6 @@ public abstract class Entity extends GraphicObject{
 	public void walkRight(float dt) {
 		body.walk();
 		moveRight(dt);
-	}
-	
-	/**
-	 * play the jump animation and move up, all according to the change in time
-	 * @param dt
-	 */
-	public void jump(float dt) {
-		moveUp(dt);
-		body.jump();
 	}
 	
 	/**

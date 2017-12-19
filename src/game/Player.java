@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class Player extends Entity{
 
+	private static final float INITIAL_JUMP_SPD = 40;
 	private static int numLimbs = 4;
 	private static int numJoints = 2;
 
@@ -38,6 +39,13 @@ public class Player extends Entity{
 	 */
 	public void draw() {
 		super.draw();
+	}
+	
+	public void jump(float dt) {
+		if(checkGrounded()) {
+			setVY(INITIAL_JUMP_SPD);
+			body.jump();
+		}
 	}
 	
 	/**

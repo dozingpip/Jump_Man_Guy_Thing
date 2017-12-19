@@ -37,7 +37,7 @@ public class Main extends PApplet implements ApplicationConstants{
 		enemies = new ArrayList<Enemy>();
 //		enemies.add(new Enemy("", 2, 2, 4f, 2, 1));
 		levels = new ArrayList<Level>();
-		levels.add(new Level(30, new Platform[] {testPlatform, new Platform(0, 0, 0, new Surface(-5, -10, 80, 0), new float[] {20, 30, 14}, new float[] {PI/16, PI/8, PI/15} )}, 10, 2));
+		levels.add(new Level(30, new Platform[] {testPlatform, new Platform(0, 0, 0, new Surface(25, -15, 25, PI/2), new float[] {12}, new float[] {PI/2}), new Platform(0, 0, 0, new Surface(-5, -10, 80, 0), new float[] {20, 30, 14}, new float[] {PI/16, PI/8, PI/15} )}, 10, 2));
 		setCurrentLevel(0);
 
 		player = new Player(levels.get(0).getStartX(), levels.get(0).getStartY());
@@ -106,17 +106,16 @@ public class Main extends PApplet implements ApplicationConstants{
 			}
 			
 			// Collisions
-			boolean sideHit = false;
+			boolean isGrounded = false;
 			for(Platform p: current.getPlatforms()) {
-				if(p.testCollision(player)) {
-					sideHit = true;
+				if (p.testCollision(player)) {
+					isGrounded = true;
 				}
 			}
-//			for(Platform p : current.getPlatforms()) {
-//				p.doCollision(player);
-//			}
 			
-//			System.out.println("BEFORE " + player.getX());
+			println("NO SERIOUSLY REALLY GROUNDED " + isGrounded);
+			player.setGrounded(isGrounded);
+
 			player.doMove();
 			
 			if(player.isAlive()) {
