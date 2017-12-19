@@ -2,8 +2,8 @@ package game;
 
 public class Enemy extends Entity{
 	int hitDamage;
-	public Enemy(String animFile, int numLimbs, int numJoints, float torsoSize, int health_, int hitDmg) {
-		super(animFile, numLimbs, numJoints, torsoSize, health_);
+	public Enemy(String animFile, int numLimbs, int numJoints, float torsoSize, int health, int hitDmg, float moveSpeed) {
+		super(animFile, numLimbs, numJoints, torsoSize, health, moveSpeed);
 		hitDamage = hitDmg;
 	}
 	
@@ -25,11 +25,5 @@ public class Enemy extends Entity{
 		}else {
 			return false;
 		}
-	}
-	
-	public boolean onScreen(float xMin, float yMin, float xMax, float yMax) {
-		if(getX()>xMin && getY()> yMin && getX()< xMax && getY()< yMax) {
-			return true;
-		}else return false;
 	}
 }

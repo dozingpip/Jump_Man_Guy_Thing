@@ -14,9 +14,10 @@ public class Player extends Entity{
 	static String playerAnimFile = "player.txt";
 	static float torsoSize = 8f;
 	static int playerMaxHealth = 5;
+	static float moveSpeed = 0.05f;
 	
 	public Player() {
-		super(playerAnimFile, numLimbs, numJoints, torsoSize, playerMaxHealth);
+		super(playerAnimFile, numLimbs, numJoints, torsoSize, playerMaxHealth, moveSpeed);
 	}
 	
 	public void draw() {
@@ -49,6 +50,16 @@ public class Player extends Entity{
 	
 	public void die() {
 		body.die();
+	}
+	
+	public void walkLeft() {
+		body.walk();
+		setX(getX()+getMoveSpd());
+	}
+	
+	public void walkRight() {
+		body.walk();
+		setX(getX()-getMoveSpd());
 	}
 
 }

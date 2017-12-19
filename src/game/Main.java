@@ -9,12 +9,16 @@ public class Main extends PApplet implements ApplicationConstants{
 	Player player;
 	
 	Platform testPlatform;
+	float offsetMaxX, offsetMaxY, offsetMinX, offsetMinY;
+	float camX, camY;
 	
 	private boolean animate = true;
 	private float lastTime;
 	private long frame = 0L;
 	ArrayList<Character> keysPressed;
 	ArrayList<Enemy> enemies;
+	ArrayList<Level> levels;
+	Level current;
 	
 	public void settings() 
 	{
@@ -32,12 +36,20 @@ public class Main extends PApplet implements ApplicationConstants{
 		testPlatform = new Platform(0, 0, PI/4, new Surface(-10, -2.5f, 20, 0), new float[] {5, 20, 5}, new float[] {PI/2, PI/2, PI/2});
 		keysPressed = new ArrayList<Character>();
 		enemies = new ArrayList<Enemy>();
-		//enemies.add(new Enemy("", 2, 2, 4f, 2, 1));
+//		enemies.add(new Enemy("", 2, 2, 4f, 2, 1));
+		levels = new ArrayList<Level>();
+		levels.add(new Level(30, new Platform[] {testPlatform}, 2, 2));
+		setCurrentLevel(0);
 	}
 	
 	public void draw() 
 	{
+		if (camX > offsetMaxX)
+		    camX = offsetMaxX;
+		else if (camX < offsetMinX)
+		    camX = offsetMinX;
 		
+		camX = player.getX() - WORLD_WIDTH / 2;
 		frame++;
 		if (frame % 5 == 0) {
 			background(167);
@@ -48,36 +60,34 @@ public class Main extends PApplet implements ApplicationConstants{
 	 		
 	 		scale(WORLD_TO_PIXELS_SCALE, -WORLD_TO_PIXELS_SCALE);	
 			
-	 		// horizontal line for the "ground"
-			stroke(0);
 			strokeWeight(0.2f);
-			line(WORLD_X_MIN, 0, WORLD_X_MAX, 0);
-			
-			//testPlatform.draw();
+			player.draw();
+			translate(camX, 0);
+			for(Platform p: current.getPlatforms()) {
+				p.draw();
+			}
 			
 			for(Enemy e: enemies) {
-				if(e.isAlive() && e.onScreen(WORLD_X_MIN, WORLD_Y_MIN, WORLD_X_MAX, WORLD_Y_MAX)) {
+				if(e.isAlive()) {
 					e.draw();
 				}
 			}
-						
-			player.draw();
-			
 			
 			popMatrix();
 		}
 		
-		testPlatform.setAngle(testPlatform.getAngle() + PI/1024);
-		//testPlatform.checkColliding(player);
+		//testPlatform.setAngle(testPlatform.getAngle() + PI/1024);
+		testPlatform.checkColliding(player);
+		
 		
 		float t = millis();
 		
 		if (animate)
 		{
-			if(keysPressed.isEmpty()) {
-				player.stop();
-			}else {
+			if(!keysPressed.isEmpty()) {
 				player.move(keysPressed);
+			}else {
+				player.stop();
 			}
 			//	time in seconds since last update: (t-lastTime_)*0.001f
 			float dt = (t-lastTime)*0.001f;
@@ -89,16 +99,20 @@ public class Main extends PApplet implements ApplicationConstants{
 			}
 			
 			for(Enemy e: enemies) {
-				if(e.isAlive() && e.onScreen(WORLD_X_MIN, WORLD_Y_MIN, WORLD_X_MAX, WORLD_Y_MAX)) {
+				if(e.isAlive()) {
 					e.update(dt);
 				}
 			}
 		}
 
 		lastTime = t;
-		
 	}
 	
+	public void setCurrentLevel(int index) {
+		current = levels.get(index);
+		offsetMaxX = current.getWidth() - WORLD_WIDTH;
+		offsetMinX = 0;
+	}
 	public void keyPressed() {
 		if(!keysPressed.contains(key))
 			keysPressed.add(key);
@@ -122,4 +136,5 @@ public class Main extends PApplet implements ApplicationConstants{
 		// TODO Auto-generated method stub
 		PApplet.main("game.Main");
 	}
+
 }

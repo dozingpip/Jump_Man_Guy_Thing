@@ -6,13 +6,15 @@ public abstract class Entity extends GraphicObject{
 	int hitDamage;
 	Hitbox hitbox;
 	int health;
-	private float moveIncrement = 0.05f;
-	public Entity(String animFile, int numLimbs, int numJoints, float torsoSize, int health_) {
+	private float moveSpeed;
+	public Entity(String animFile, int numLimbs, int numJoints, float torsoSize, int health_, float moveSpeed_) {
+		super(0, 0, 0);
 		body = new Body(animFile, numLimbs, numJoints, torsoSize);
+		moveSpeed = moveSpeed_;
 		health = health_;
 		float xMin = x-(torsoSize/2);
 		float xMax = x+(torsoSize/2);
-		float yMin = y-(torsoSize/2)-(7*torsoSize/8);//was 6.5f for player
+		float yMin = y-(11*torsoSize/8);
 		float yMax = y+(torsoSize/2);
 		hitbox = new Hitbox(xMin, yMin, xMax, yMax, 0);
 	}
@@ -64,31 +66,26 @@ public abstract class Entity extends GraphicObject{
 	}
 	
 	public void moveUp() {
-		y+=moveIncrement;
-		hitbox.incY(moveIncrement);
+		y+=moveSpeed;
+		hitbox.incY(moveSpeed);
 	}
 	
 	public void moveDown() {
-		y-=moveIncrement;
-		hitbox.incY(-moveIncrement);
+		y-=moveSpeed;
+		hitbox.incY(-moveSpeed);
 	}
 	
 	public void moveLeft() {
-		x-=moveIncrement;
-		hitbox.incX(-moveIncrement);
+		x+=moveSpeed;
+		hitbox.incX(-moveSpeed);
 	}
 	public void moveRight() {
-		x+=moveIncrement;
-		hitbox.incX(moveIncrement);
+		x-=moveSpeed;
+		System.out.println(x);
+		hitbox.incX(moveSpeed);
 	}
 	
-	public void walkLeft() {
-		body.walk();
-		moveLeft();
-	}
-	
-	public void walkRight() {
-		body.walk();
-		moveRight();
+	public float getMoveSpd() {
+		return moveSpeed;
 	}
 }

@@ -67,7 +67,7 @@ public class Platform extends GraphicObject{
 	}
 	
 	public void draw() {
-		//app_.ellipse(x, y, DOT_RADIUS*2, DOT_RADIUS*2);
+		app_.ellipse(x, y, DOT_RADIUS*2, DOT_RADIUS*2);
 		for(Surface s : surfaces) {
 			s.draw();
 		}
@@ -81,7 +81,7 @@ public class Platform extends GraphicObject{
 			}
 		}
 		if(hit!=null) {
-			System.out.println("hit!");
+//			System.out.println("hit!");
 			return true;
 		}else return false;
 	}
