@@ -30,7 +30,6 @@ public class Main extends PApplet implements ApplicationConstants{
 		frameRate(600);
 		setupGraphicClasses_();
 		lastTime = millis();
-		player = new Player();
 		
 //		testPlatform = new Platform(0, 0, 0, new Surface[]{new Surface(-10, -5, 20, 0), new Surface(4, 5, 8, 7*PI/5)});
 		testPlatform = new Platform(0, 0, PI/4, new Surface(-10, -2.5f, 20, 0), new float[] {5, 20, 5}, new float[] {PI/2, PI/2, PI/2});
@@ -38,8 +37,10 @@ public class Main extends PApplet implements ApplicationConstants{
 		enemies = new ArrayList<Enemy>();
 //		enemies.add(new Enemy("", 2, 2, 4f, 2, 1));
 		levels = new ArrayList<Level>();
-		levels.add(new Level(30, new Platform[] {testPlatform}, 2, 2));
+		levels.add(new Level(30, new Platform[] {testPlatform}, 10, 2));
 		setCurrentLevel(0);
+
+		player = new Player(levels.get(0).getStartX(), levels.get(0).getStartY());
 	}
 	
 	public void draw() 
@@ -58,11 +59,11 @@ public class Main extends PApplet implements ApplicationConstants{
 //			p.doCollision(player);
 //		}
 		
-		System.out.println("BEFORE " + player.getX());
+//		System.out.println("BEFORE " + player.getX());
 		
 		player.doMove();
 		
-		System.out.println("AFTER " + player.getX());
+//		System.out.println("AFTER " + player.getX());
 		
 		// Drawing
 		if (camX > offsetMaxX)
@@ -72,7 +73,7 @@ public class Main extends PApplet implements ApplicationConstants{
 		
 		camX = player.getX();
 		
-		println("CAM ");
+//		println("CAM ");
 		
 		frame++;
 		if (frame % 5 == 0) {

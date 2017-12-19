@@ -24,6 +24,21 @@ public abstract class Entity extends GraphicObject{
 		hitbox = new Hitbox(xMin, yMin, xMax, yMax, 0);
 	}
 	
+	public Entity(float x, float y, String animFile, int numLimbs, int numJoints, float torsoSize, int health_, float moveSpeed_) {
+		super(x, y, 0);
+		body = new Body(animFile, numLimbs, numJoints, torsoSize);
+		moveSpeed = moveSpeed_;
+		nextPos = new float[2];
+		nextPos[0] = getX();
+		nextPos[1] = getY();
+		health = health_;
+		float xMin = -(torsoSize/2);
+		float xMax = (torsoSize/2);
+		float yMin = -(11*torsoSize/8);
+		float yMax = (torsoSize/2);
+		hitbox = new Hitbox(xMin, yMin, xMax, yMax, 0);
+	}
+	
 	public void draw() {
 		
 		app_.pushMatrix();

@@ -92,16 +92,22 @@ public class Surface extends GraphicObject {
 		float slope = 0;
 		float perpSlope = 0;
 		float additionalPop = 0;
+		float multiplier = 0;
+		float tempAngle = 0;
 		switch(l) {
 			case POS:
 				slope = PApplet.tan(getAngle());
+				tempAngle = perpAngle % 2*PApplet.PI;
 				perpSlope = PApplet.tan(perpAngle);
 				additionalPop = 0.075f;
+				System.out.println("IS POSITIVE");
 				break;
 			case NEG:
 				slope = PApplet.tan(getAngle());
+				tempAngle = perpAngle % 2*PApplet.PI;
 				perpSlope = PApplet.tan(perpAngle);
 				additionalPop = -0.075f;
+				System.out.println("IS NEGATIVE");
 				break;
 			default:
 				break;
@@ -112,6 +118,7 @@ public class Surface extends GraphicObject {
 		diff[1] = perpSlope * diff[0] + b2;
 		diff[0] += additionalPop * PApplet.cos(perpAngle) - badX;
 		diff[1] += additionalPop * PApplet.sin(perpAngle) - badY;
+		
 		return diff;
 	}
 	

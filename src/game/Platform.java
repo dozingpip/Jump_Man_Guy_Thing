@@ -113,6 +113,7 @@ public class Platform extends GraphicObject{
 						e.moveBy(s.pushPerpendicular(e.nextXMax(), e.nextYMax(), l));
 						break;
 				}
+				hit = null;
 			}
 		}
 	}

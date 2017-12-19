@@ -19,6 +19,9 @@ public class Player extends Entity{
 	public Player() {
 		super(playerAnimFile, numLimbs, numJoints, torsoSize, playerMaxHealth, moveSpeed);
 	}
+	public Player(float x, float y) {
+		super(x, y, playerAnimFile, numLimbs, numJoints, torsoSize, playerMaxHealth, moveSpeed);
+	}
 	
 	public void draw() {
 		super.draw();
