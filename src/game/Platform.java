@@ -2,9 +2,16 @@ package game;
 
 import processing.core.PApplet;
 
+/**	A collection of surfaces which can be rotated about a provided center.
+ * 
+ * @author Thomas
+ *
+ */
 public class Platform extends GraphicObject{
 	
+	// For debug purposes, draw the point around which the platform rotates
 	private static final float DOT_RADIUS = 0.5f;
+	
 	
 	private Surface[] surfaces;
 	
@@ -14,6 +21,13 @@ public class Platform extends GraphicObject{
 	// The angle of rotation of the platform
 	private float angle;
 	
+	/**	A simple platform created from a list of arbitrarily placed surfaces
+	 * 
+	 * @param x_			The x coordinate of the platform's origin
+	 * @param y_			The y coordinate of the platform's origin
+	 * @param angle_		The angle of rotation of the platform about its origin
+	 * @param surfaces_		The list of surfaces which are part of this platform
+	 */
 	public Platform(float x_, float y_, float angle_, Surface[] surfaces_) {
 		surfaces = surfaces_;
 		x = x_;
@@ -22,6 +36,16 @@ public class Platform extends GraphicObject{
 		updateRotation(angle);
 	}
 	
+	/**	A platform created from a starting surface and a list of lengths and angles for consecutive surfaces.
+	 * 	Each consecutive surface's starting point is at the endpoint of the previous one.
+	 * 
+	 * @param x_				The x coordinate of the platform's origin
+	 * @param y_				The y coordinate of the platform's origin
+	 * @param angle_			The angle of rotation of the platform about its origin
+	 * @param firstSurface		The first surface object in the chain
+	 * @param lengths			The lengths of the consecutive surfaces
+	 * @param angles			The angles of rotation of the consecutive surfaces, relative to the previous one
+	 */
 	public Platform(float x_, float y_, float angle_, Surface firstSurface, float[] lengths, float[] angles) {
 		x = x_;
 		y = y_;
@@ -67,6 +91,8 @@ public class Platform extends GraphicObject{
 	}
 	
 	public void draw() {
+		app_.noFill();
+		app_.stroke(0, 0, 0);
 		app_.ellipse(x, y, DOT_RADIUS*2, DOT_RADIUS*2);
 		for(Surface s : surfaces) {
 			s.draw();
@@ -74,7 +100,6 @@ public class Platform extends GraphicObject{
 	}
 	
 	public boolean testCollision(Entity e) {
-		boolean sideHit = false;
 		boolean isHit = false;
 		Surface hit = null;
 		int corner = -1;
@@ -121,33 +146,12 @@ public class Platform extends GraphicObject{
 		}
 		boolean isGrounded = false;
 		for(Surface s: surfaces) {
-			if (!isHit) {
-				if (  s.intersects(e.getXMin(), e.getYMin(), e.getXMax(), e.getYMin())
-				   || s.intersects(e.getXMax(), e.getYMin(), e.getXMax(), e.getYMax())
-				   || s.intersects(e.getXMax(), e.getYMax(), e.getXMin(), e.getYMax())
-				   || s.intersects(e.getXMin(), e.getYMax(), e.getXMin(), e.getYMin())) {
-					sideHit = true;
-				}
-			}
+			System.out.println(s.intersects(e.getXMin(), e.getYMin(), e.getXMin(), e.getYMin() - 0.1f) || s.intersects(e.getXMax(), e.getYMin(), e.getXMax(), e.getYMin() - 0.1f));
 			if (s.intersects(e.getXMin(), e.getYMin(), e.getXMin(), e.getYMin() - 0.1f) || s.intersects(e.getXMax(), e.getYMin(), e.getXMax(), e.getYMin() - 0.1f)) {
 				isGrounded = true;
 			}
 		}
-		e.setGrounded(isGrounded);
-		return sideHit;
+		System.out.println("IS GROUNDED " + isGrounded);
+		return isGrounded;
 	}
-	
-	public boolean checkColliding(Player player) {
-		Surface hit = null;
-		for(Surface s: surfaces) {
-			if(s.isColliding(player.getHitbox())) {
-				hit = s;
-			}
-		}
-		if(hit!=null) {
-//			System.out.println("hit!");
-			return true;
-		}else return false;
-	}
-	
 }
