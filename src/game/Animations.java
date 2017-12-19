@@ -80,12 +80,22 @@ public class Animations {
 			animStartLine+=numLinesForThisAnimation;
 			//System.out.println("Next anim starts at "+ animStartLine);
 		}
-		idleAnim = allAnims.get(idle_idx);
-		walkAnim = allAnims.get(walk_idx);
-		jumpAnim = allAnims.get(jump_idx);
-		/*hurtAnim = allAnims.get(hurt_idx);
-		dyingAnim = allAnims.get(dying_idx);
-		*/
+		
+		if(numAnimations>4) {
+			dyingAnim = allAnims.get(dying_idx);
+		}
+		if(numAnimations>3) {
+			hurtAnim = allAnims.get(hurt_idx);
+		}
+		if(numAnimations>2) {
+			jumpAnim = allAnims.get(jump_idx);
+		}
+		if(numAnimations>1) {
+			walkAnim = allAnims.get(walk_idx);
+		}
+		if(numAnimations>0) {
+			idleAnim = allAnims.get(idle_idx);
+		}
 	}
 	
 	/**

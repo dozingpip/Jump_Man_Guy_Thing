@@ -37,14 +37,7 @@ public class Body extends GraphicObject{
 			}
 			setState(AnimState.IDLE);
 		} catch (IOException e) {
-			System.out.println("Failed opening specified file, so using default file.");
-			try {
-				keys = FileInOutMachine.getKeyframesFromFile("Animations/default.txt");
-				
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				System.out.println("Default file also not found. :(");
-			}
+			System.out.println("Failed opening specified file.");
 		}
 		start = keys.get(0);
 		t = 0;

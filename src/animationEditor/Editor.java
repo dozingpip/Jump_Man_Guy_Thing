@@ -30,7 +30,7 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	int jointSelected;
 	float buttonY = WORLD_Y_MIN+6f;
 	int jointsOnLimbs = 2;
-	int limbsOnBody = 4;
+	int limbsOnBody = 2;
 	int timeSelected = 1;
 	boolean editAnimation = false;
 	boolean showJumpTo = false;
@@ -224,7 +224,7 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 		r.add(new Runnable() { public void run() {newAnim();}});
 		r.add(new Runnable() { public void run() {
 			try {
-				keyframes = FileInOutMachine.getKeyframesFromFile();
+				keyframes = FileInOutMachine.getKeyframesFromFile("default.txt");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -298,16 +298,16 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 	 * The UI for jumping to any given saved keyframe (not currently using, 
 	 * because it doesn't get updated based on edits to the animation)
 	 */
-	public void initJumpToUI() {
-		ArrayList<String> buttonNames = new ArrayList<String>();
-		ArrayList<Runnable> r = new ArrayList<Runnable>();
-		for(int i = 0; i<keyframes.size(); i++) {
-			buttonNames.add("frame "+ i);
-			int frame = i;
-			r.add(new Runnable() { public void run() {jumpTo(frame);}});
-		}
-		jumpToUI = new Menu(r, buttonNames, buttonY-3f, WORLD_WIDTH, 2f, WORLD_X_MIN);
-	}
+//	public void initJumpToUI() {
+//		ArrayList<String> buttonNames = new ArrayList<String>();
+//		ArrayList<Runnable> r = new ArrayList<Runnable>();
+//		for(int i = 0; i<keyframes.size(); i++) {
+//			buttonNames.add("frame "+ i);
+//			int frame = i;
+//			r.add(new Runnable() { public void run() {jumpTo(frame);}});
+//		}
+//		jumpToUI = new Menu(r, buttonNames, buttonY-3f, WORLD_WIDTH, 2f, WORLD_X_MIN);
+//	}
 	
 	/**
 	 * update the timekeeping button
@@ -396,24 +396,23 @@ public class Editor extends PApplet implements game.ApplicationConstants {
 		animate = false;
 		startScreen = false;
 		editAnimation = true;
-		try {
-			keyframes = FileInOutMachine.getKeyframesFromFile("Animations/default.txt");
-			jumpTo(0);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Default file also not found. :(");
-		}
 		initializeEverything();
 	}
 	
 	public void initializeEverything() {
-		body = new Body(limbsOnBody, jointsOnLimbs, 8);
+		body = new Body("default_spider.txt", limbsOnBody, jointsOnLimbs, 8);
+		try {
+			keyframes = FileInOutMachine.getKeyframesFromFile("Animations/default_spider.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		limbSelected = 1;
 		selectLimb(0);
 		lastTime = millis();
 		initAnimUI();
 		initPlayUI();
-		initJumpToUI();
+//		initJumpToUI();
 		initTimeSelectUI();
 	}
 	

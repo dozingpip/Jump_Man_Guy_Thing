@@ -26,4 +26,24 @@ public class Enemy extends Entity{
 			return false;
 		}
 	}
+	
+	public boolean seePlayer(Player player, Level level) {
+		
+		if(getY()>= player.getY()) {
+			Platform[] platforms = level.getPlatforms();
+			for(Platform p: platforms) {
+				return !(getY() >= p.getY() && (player.getX()<p.getX() && getX()>p.getX())||
+						(player.getX()>p.getX() && getX()<p.getX()));
+			}
+			return true;
+		}else return true;
+	}
+	
+	public void moveToward(Player player, float dt) {
+		if(player.getX()>getX()) {
+			moveLeft(dt);
+		}else if(player.getX()<getX()) {
+			moveRight(dt);
+		}else hitPlayer(player);
+	}
 }
