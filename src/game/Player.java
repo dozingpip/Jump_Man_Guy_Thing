@@ -54,12 +54,12 @@ public class Player extends Entity{
 	
 	public void walkLeft() {
 		body.walk();
-		setX(getX()+getMoveSpd());
+		moveBy(-getMoveSpd(), 0);
 	}
 	
 	public void walkRight() {
 		body.walk();
-		setX(getX()-getMoveSpd());
+		moveBy(getMoveSpd(), 0);
 	}
 
 }

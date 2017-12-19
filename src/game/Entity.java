@@ -1,8 +1,10 @@
 package game;
 
+import processing.core.PApplet;
+
 public abstract class Entity extends GraphicObject{
+	float[] nextPos;
 	Body body;
-	float x, y;
 	int hitDamage;
 	Hitbox hitbox;
 	int health;
@@ -11,20 +13,24 @@ public abstract class Entity extends GraphicObject{
 		super(0, 0, 0);
 		body = new Body(animFile, numLimbs, numJoints, torsoSize);
 		moveSpeed = moveSpeed_;
+		nextPos = new float[2];
+		nextPos[0] = getX();
+		nextPos[1] = getY();
 		health = health_;
-		float xMin = x-(torsoSize/2);
-		float xMax = x+(torsoSize/2);
-		float yMin = y-(11*torsoSize/8);
-		float yMax = y+(torsoSize/2);
+		float xMin = -(torsoSize/2);
+		float xMax = (torsoSize/2);
+		float yMin = -(11*torsoSize/8);
+		float yMax = (torsoSize/2);
 		hitbox = new Hitbox(xMin, yMin, xMax, yMax, 0);
 	}
 	
 	public void draw() {
+		
 		app_.pushMatrix();
-		app_.translate(x, y);
+		app_.translate(getX(), getY());
 		body.draw();
-		app_.popMatrix();
 		hitbox.draw();
+		app_.popMatrix();
 	}
 	
 	public int getHealth() {
@@ -44,8 +50,22 @@ public abstract class Entity extends GraphicObject{
 		return health>0;
 	}
 	
-	public boolean isColliding(Hitbox other) {
-		return hitbox.isColliding(other);
+	public boolean isColliding(Entity other) {
+		if(		//is other hitbox's bottom left corner inside?
+				isInside(other.getXMin(), other.getYMin()) ||
+				//is other hitbox's bottom right corner inside?
+				isInside(other.getXMin(), other.getYMax()) ||
+				//is other hitbox's top left corner inside?
+				isInside(other.getXMax(), other.getYMin()) ||
+				//is other hitbox's top right corner inside?
+				isInside(other.getXMax(), other.getYMax())) {
+			return true;
+		}else return false;
+	}
+	
+	public boolean isInside(float x, float y)
+	{	
+		return hitbox.isInside(x - getX(), y - getY());
 	}
 	
 	public Hitbox getHitbox() {
@@ -61,30 +81,80 @@ public abstract class Entity extends GraphicObject{
 	}
 	
 	public void fall() {
-		y-=0.05f;
-		hitbox.incY(-0.05f);
+		nextPos[1] -= 0.05f;
 	}
 	
 	public void moveUp() {
-		y+=moveSpeed;
-		hitbox.incY(moveSpeed);
+		nextPos[1] += moveSpeed;
 	}
 	
 	public void moveDown() {
-		y-=moveSpeed;
-		hitbox.incY(-moveSpeed);
+		nextPos[1] -= moveSpeed;
 	}
 	
 	public void moveLeft() {
-		x+=moveSpeed;
-		hitbox.incX(-moveSpeed);
+		nextPos[0] += moveSpeed;
 	}
 	public void moveRight() {
-		x-=moveSpeed;
-		System.out.println(x);
-		hitbox.incX(moveSpeed);
+		nextPos[0] -= moveSpeed;
+		System.out.println(nextPos[0]);
 	}
 	
+	public void moveBy(float[] diff) {
+		nextPos[0] += diff[0];
+		nextPos[1] += diff[1];
+	}
+	
+	public void moveBy(float x, float y) {
+		nextPos[0] += x;
+		nextPos[1] += y;
+	}
+	
+	public void doMove() {
+		setX(nextPos[0]);
+		setY(nextPos[1]);
+	}
+	
+	public float getXMin() {
+		return getX() + hitbox.getXMin();
+	}
+	
+	public float getYMin() {
+		return getY() + hitbox.getYMin();
+	}
+	
+	public float getXMax() {
+		return getX() + hitbox.getXMax();
+	}
+	
+	public float getYMax() {
+		return getY() + hitbox.getYMax();
+	}
+	
+	public float nextXMin() {
+		return nextPos[0] + hitbox.getXMin();
+	}
+	
+	public float nextYMin() {
+		return nextPos[1] + hitbox.getYMin();
+	}
+	
+	public float nextXMax() {
+		return nextPos[0] + hitbox.getXMax();
+	}
+	
+	public float nextYMax() {
+		return nextPos[1] + hitbox.getYMax();
+	}
+	
+	public float getW() {
+		return hitbox.width;
+	}
+	
+	public float getH() {
+		return hitbox.height;
+	}
+
 	public float getMoveSpd() {
 		return moveSpeed;
 	}

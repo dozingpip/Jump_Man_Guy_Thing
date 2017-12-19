@@ -73,6 +73,50 @@ public class Platform extends GraphicObject{
 		}
 	}
 	
+	public void doCollision(Entity e) {
+		Surface hit = null;
+		int corner = -1;
+		LineSide l = null;
+		for(Surface s: surfaces) {
+			if (s.intersects(e.getXMin(), e.getYMin(), e.nextXMin(), e.nextYMin())) {
+				corner = 0;
+				hit = s;
+				l = s.findSide(e.getXMin(), e.getYMin());
+			}
+			else if (s.intersects(e.getXMin(), e.getYMax(), e.nextXMin(), e.nextYMax())) {
+				corner = 1;
+				hit = s;
+				l = s.findSide(e.getXMin(), e.getYMax());
+			}
+			else if (s.intersects(e.getXMax(), e.getYMin(), e.nextXMax(), e.nextYMin())) {
+				corner = 2;
+				hit = s;
+				l = s.findSide(e.getXMax(), e.getYMin());
+			}
+			else if (s.intersects(e.getXMax(), e.getYMax(), e.nextXMax(), e.nextYMax())) {
+				corner = 3;
+				hit = s;
+				l = s.findSide(e.getXMax(), e.getYMax());
+			}
+			if (hit != null) {
+				switch(corner) {
+					case 0:
+						e.moveBy(s.pushPerpendicular(e.nextXMin(), e.nextYMin(), l));
+						break;
+					case 1:
+						e.moveBy(s.pushPerpendicular(e.nextXMin(), e.nextYMax(), l));
+						break;
+					case 2:
+						e.moveBy(s.pushPerpendicular(e.nextXMax(), e.nextYMin(), l));
+						break;
+					case 3:
+						e.moveBy(s.pushPerpendicular(e.nextXMax(), e.nextYMax(), l));
+						break;
+				}
+			}
+		}
+	}
+	
 	public boolean checkColliding(Player player) {
 		Surface hit = null;
 		for(Surface s: surfaces) {

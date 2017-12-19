@@ -108,7 +108,7 @@ public class Hitbox extends GraphicObject{
 	 */
 	public boolean isInside(float x, float y)
 	{	
-		float dx = x - getX(), dy = y - getY();
+		float dx = x - getXMin(), dy = y - getYMin();
 		float ca = PApplet.cos(angle), sa = PApplet.sin(angle);
 //		float ca = (float) Math.cos(angle_), sa = (float) Math.sin(angle_);
 		

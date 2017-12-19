@@ -43,13 +43,37 @@ public class Main extends PApplet implements ApplicationConstants{
 	}
 	
 	public void draw() 
-	{
+	{		
+				
+		// Positional Movement
+		if(!keysPressed.isEmpty()) {
+			player.move(keysPressed);
+		}else {
+			player.stop();
+		}
+		
+		// Collisions
+		testPlatform.doCollision(player);
+//		for(Platform p : current.getPlatforms()) {
+//			p.doCollision(player);
+//		}
+		
+		System.out.println("BEFORE " + player.getX());
+		
+		player.doMove();
+		
+		System.out.println("AFTER " + player.getX());
+		
+		// Drawing
 		if (camX > offsetMaxX)
 		    camX = offsetMaxX;
 		else if (camX < offsetMinX)
 		    camX = offsetMinX;
 		
-		camX = player.getX() - WORLD_WIDTH / 2;
+		camX = player.getX();
+		
+		println("CAM ");
+		
 		frame++;
 		if (frame % 5 == 0) {
 			background(167);
@@ -60,9 +84,13 @@ public class Main extends PApplet implements ApplicationConstants{
 	 		
 	 		scale(WORLD_TO_PIXELS_SCALE, -WORLD_TO_PIXELS_SCALE);	
 			
+	 		
 			strokeWeight(0.2f);
+			
+			translate(-camX, 0);
+			
 			player.draw();
-			translate(camX, 0);
+			
 			for(Platform p: current.getPlatforms()) {
 				p.draw();
 			}
@@ -77,18 +105,14 @@ public class Main extends PApplet implements ApplicationConstants{
 		}
 		
 		//testPlatform.setAngle(testPlatform.getAngle() + PI/1024);
-		testPlatform.checkColliding(player);
+//		testPlatform.checkColliding(player);
 		
 		
+		// Animating
 		float t = millis();
 		
 		if (animate)
 		{
-			if(!keysPressed.isEmpty()) {
-				player.move(keysPressed);
-			}else {
-				player.stop();
-			}
 			//	time in seconds since last update: (t-lastTime_)*0.001f
 			float dt = (t-lastTime)*0.001f;
 			

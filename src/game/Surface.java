@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.geom.Line2D;
+
 import processing.core.PApplet;
 
 public class Surface extends GraphicObject {
@@ -69,6 +71,86 @@ public class Surface extends GraphicObject {
 				isInside(other.getXMax(), other.getYMax())) {
 			return true;
 		}else return false;
+	}
+	
+	public static float[] lineIntersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+		float denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+		if (denom == 0.0) { // Lines are parallel.
+			return null;
+		}
+		float ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3))/denom;
+		float ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3))/denom;
+		if (ua >= 0.0f && ua <= 1.0f && ub >= 0.0f && ub <= 1.0f) {
+			// Get the intersection point.
+			return new float[] {(x1 + ua*(x2 - x1)), (y1 + ua*(y2 - y1))};
+		}
+		return null;
+	}
+	
+	public float[] pushPerpendicular(float badX, float badY, LineSide l) {
+		float[] diff = {0, 0};
+		float slope = 0;
+		float perpSlope = 0;
+		float additionalPop = 0;
+		switch(l) {
+			case POS:
+				slope = PApplet.tan(getAngle());
+				perpSlope = PApplet.tan(perpAngle);
+				additionalPop = 0.075f;
+				break;
+			case NEG:
+				slope = PApplet.tan(getAngle());
+				perpSlope = PApplet.tan(perpAngle);
+				additionalPop = -0.075f;
+				break;
+			default:
+				break;
+		}
+		float b1 = getY() - slope*getX();
+		float b2 = badY - perpSlope*badX;
+		diff[0] = -(b1-b2)/(slope-perpSlope);
+		diff[1] = perpSlope * diff[0] + b2;
+		diff[0] += additionalPop * PApplet.cos(perpAngle) - badX;
+		diff[1] += additionalPop * PApplet.sin(perpAngle) - badY;
+		return diff;
+	}
+	
+	public LineSide findSide(float testX, float testY) {
+		float det = (x2 - getX())*(testY - getY()) - ((y2 - getY())*(testX - getX()));
+		if (det < 0) {
+			return LineSide.NEG;
+		}
+		else if (det > 0) {
+			return LineSide.POS;
+		}
+		else {
+			return LineSide.ON;
+		}
+	}
+	
+	public boolean intersects(float testX1, float testY1, float testX2, float testY2) {
+		return (Line2D.linesIntersect((double)getX(), (double)getY(),
+									  (double)x2,     (double)y2,
+									  (double)testX1, (double)testY1,
+									  (double)testX2, (double)testY2));
+//		boolean surfIsVertical = getX() == x2;
+//		// The slope of the surface
+//		float sA;
+//		float sB;
+//		boolean testIsVertical = testX1 == testX2;
+//		// The slope of the tested line
+//		float tA;
+//		float tB;
+//		
+//		if (!surfIsVertical) {
+//			sA = (y2 - getY())/(x2 - getX());
+//		}
+//		if (!testIsVertical) {
+//			tA = (testY2 - testY1)/(testX2 - testX1);
+//		}
+//		if (!surfIsVertical && !testIsVertical) {
+//			
+//		}
 	}
 	
 	public boolean isInside(float x, float y) {
