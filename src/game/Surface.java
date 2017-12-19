@@ -98,8 +98,9 @@ public class Surface extends GraphicObject {
 		switch(l) {
 			case POS:
 				slope = PApplet.tan(getAngle());
-				tempAngle = perpAngle % 2*PApplet.PI;
-				if (tempAngle < PApplet.PI/2 + PApplet.PI/2000 && tempAngle > PApplet.PI/2 - PApplet.PI/2000) {
+				tempAngle = perpAngle;
+				System.out.println("ANGLE " + tempAngle);
+				if (((tempAngle < PApplet.PI/2 + PApplet.PI/2000 && tempAngle > PApplet.PI/2 - PApplet.PI/2000)) || ((tempAngle < 3*PApplet.PI/2 + PApplet.PI/2000 && tempAngle > 3*PApplet.PI/2 - PApplet.PI/2000))) {
 					isVertical = true;
 					perpSlope = -10101010;
 				}

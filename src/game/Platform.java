@@ -116,14 +116,14 @@ public class Platform extends GraphicObject{
 				hit = null;
 			}
 		}
+		boolean isGrounded = false;
 		for(Surface s: surfaces) {
-			if (s.intersects(e.getXMin(), e.getYMin(), e.getXMin(), e.getYMin() - 0.075f) || s.intersects(e.getXMax(), e.getYMin(), e.getXMax(), e.getYMin() - 0.075f)) {
-				e.setGrounded(true);
-			}
-			else {
-				e.setGrounded(false);
+			
+			if (s.intersects(e.getXMin(), e.getYMin(), e.getXMin(), e.getYMin() - 0.1f) || s.intersects(e.getXMax(), e.getYMin(), e.getXMax(), e.getYMin() - 0.1f)) {
+				isGrounded = true;
 			}
 		}
+		e.setGrounded(isGrounded);
 	}
 	
 	public boolean checkColliding(Player player) {

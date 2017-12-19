@@ -98,8 +98,11 @@ public abstract class Entity extends GraphicObject{
 	public void doGravity(float dt) {
 		if (!isOnGround) {
 			vy -= G * dt;
+			nextPos[1] += vy * dt;
 		}
-		nextPos[1] += vy * dt;
+		else {
+			vy = 0;
+		}
 	}
 	
 	public void update(float dt) {
