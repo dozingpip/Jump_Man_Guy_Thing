@@ -37,7 +37,7 @@ public class Main extends PApplet implements ApplicationConstants{
 		enemies = new ArrayList<Enemy>();
 //		enemies.add(new Enemy("", 2, 2, 4f, 2, 1));
 		levels = new ArrayList<Level>();
-		levels.add(new Level(30, new Platform[] {testPlatform}, 10, 2));
+		levels.add(new Level(30, new Platform[] {testPlatform, new Platform(0, 0, 0, new Surface(-5, -10, 80, 0), new float[] {20, 30, 14}, new float[] {PI/16, PI/8, PI/15} )}, 10, 2));
 		setCurrentLevel(0);
 
 		player = new Player(levels.get(0).getStartX(), levels.get(0).getStartY());
@@ -46,22 +46,7 @@ public class Main extends PApplet implements ApplicationConstants{
 	public void draw() 
 	{		
 				
-		// Positional Movement
-		if(!keysPressed.isEmpty()) {
-			player.move(keysPressed);
-		}else {
-			player.stop();
-		}
 		
-		// Collisions
-		testPlatform.doCollision(player);
-//		for(Platform p : current.getPlatforms()) {
-//			p.doCollision(player);
-//		}
-		
-//		System.out.println("BEFORE " + player.getX());
-		
-		player.doMove();
 		
 //		System.out.println("AFTER " + player.getX());
 		
@@ -112,10 +97,33 @@ public class Main extends PApplet implements ApplicationConstants{
 		// Animating
 		float t = millis();
 		
+		
+		
 		if (animate)
 		{
 			//	time in seconds since last update: (t-lastTime_)*0.001f
 			float dt = (t-lastTime)*0.001f;
+			
+			player.doGravity(dt);
+			
+			// Positional Movement
+			if(!keysPressed.isEmpty()) {
+				player.move(keysPressed, dt);
+			}else {
+				player.stop();
+			}
+			
+			// Collisions
+			for(Platform p: current.getPlatforms()) {
+				p.doCollision(player);
+			}
+//			for(Platform p : current.getPlatforms()) {
+//				p.doCollision(player);
+//			}
+			
+//			System.out.println("BEFORE " + player.getX());
+			
+			player.doMove();
 			
 			if(player.isAlive()) {
 				player.update(dt);

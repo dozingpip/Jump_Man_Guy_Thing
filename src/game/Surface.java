@@ -99,14 +99,14 @@ public class Surface extends GraphicObject {
 				slope = PApplet.tan(getAngle());
 				tempAngle = perpAngle % 2*PApplet.PI;
 				perpSlope = PApplet.tan(perpAngle);
-				additionalPop = 0.075f;
+				additionalPop = 0.05f;
 				System.out.println("IS POSITIVE");
 				break;
 			case NEG:
 				slope = PApplet.tan(getAngle());
 				tempAngle = perpAngle % 2*PApplet.PI;
 				perpSlope = PApplet.tan(perpAngle);
-				additionalPop = -0.075f;
+				additionalPop = -0.05f;
 				System.out.println("IS NEGATIVE");
 				break;
 			default:

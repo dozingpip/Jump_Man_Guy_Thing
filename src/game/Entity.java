@@ -8,6 +8,8 @@ public abstract class Entity extends GraphicObject{
 	int hitDamage;
 	Hitbox hitbox;
 	int health;
+	private boolean isOnGround;
+	private float vy;
 	private float moveSpeed;
 	public Entity(String animFile, int numLimbs, int numJoints, float torsoSize, int health_, float moveSpeed_) {
 		super(0, 0, 0);
@@ -16,6 +18,8 @@ public abstract class Entity extends GraphicObject{
 		nextPos = new float[2];
 		nextPos[0] = getX();
 		nextPos[1] = getY();
+		isOnGround = false;
+		vy = 0;
 		health = health_;
 		float xMin = -(torsoSize/2);
 		float xMax = (torsoSize/2);
@@ -87,6 +91,17 @@ public abstract class Entity extends GraphicObject{
 		return hitbox;
 	}
 	
+	public void setGrounded(boolean g) {
+		isOnGround = g;
+	}
+	
+	public void doGravity(float dt) {
+		if (!isOnGround) {
+			vy -= G * dt;
+		}
+		nextPos[1] += vy * dt;
+	}
+	
 	public void update(float dt) {
 		body.update(dt);
 	}
@@ -99,19 +114,19 @@ public abstract class Entity extends GraphicObject{
 		nextPos[1] -= 0.05f;
 	}
 	
-	public void moveUp() {
-		nextPos[1] += moveSpeed;
+	public void moveUp(float dt) {
+		nextPos[1] += moveSpeed * dt;
 	}
 	
-	public void moveDown() {
-		nextPos[1] -= moveSpeed;
+	public void moveDown(float dt) {
+		nextPos[1] -= moveSpeed * dt;
 	}
 	
-	public void moveLeft() {
-		nextPos[0] += moveSpeed;
+	public void moveLeft(float dt) {
+		nextPos[0] -= moveSpeed * dt;
 	}
-	public void moveRight() {
-		nextPos[0] -= moveSpeed;
+	public void moveRight(float dt) {
+		nextPos[0] += moveSpeed * dt;
 		System.out.println(nextPos[0]);
 	}
 	

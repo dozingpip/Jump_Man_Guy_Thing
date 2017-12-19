@@ -27,27 +27,27 @@ public class Player extends Entity{
 		super.draw();
 	}
 	
-	public void move(char k) {
+	public void move(char k, float dt) {
 		switch(k) {
 			case 'w':
-				jump();
+				jump(dt);
 				break;
 			case 'a':
-				walkLeft();
+				walkLeft(dt);
 				break;
 			case 'd':
-				walkRight();
+				walkRight(dt);
 				break;
 		}
 	}
 	
-	public void move(ArrayList<Character> keys) {
+	public void move(ArrayList<Character> keys, float dt) {
 		for(Character c: keys)
-			move(c);
+			move(c, dt);
 	}
 	
-	public void jump() {
-		moveUp();
+	public void jump(float dt) {
+		moveUp(dt);
 		body.jump();
 	}
 	
@@ -55,14 +55,14 @@ public class Player extends Entity{
 		body.die();
 	}
 	
-	public void walkLeft() {
+	public void walkLeft(float dt) {
 		body.walk();
-		moveBy(-getMoveSpd(), 0);
+		moveLeft(dt);
 	}
 	
-	public void walkRight() {
+	public void walkRight(float dt) {
 		body.walk();
-		moveBy(getMoveSpd(), 0);
+		moveRight(dt);
 	}
 
 }
