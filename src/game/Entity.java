@@ -75,7 +75,7 @@ public abstract class Entity extends GraphicObject{
 		app_.pushMatrix();
 		app_.translate(getX(), getY());
 		body.draw();
-		hitbox.draw();
+//		hitbox.draw();
 		app_.popMatrix();
 	}
 	

@@ -94,13 +94,13 @@ public class Surface extends GraphicObject {
 	 * @return		The difference between the provided coordinates and the coordinates of the new location for that point.
 	 * 				[0] is the x coordinate, and
 	 * 				[1] is the y coordinate.
+	 * 				[2] is for catching errors (if the value is -1, don't move the player)
 	 */
 	public float[] pushPerpendicular(float badX, float badY, LineSide l) {
-		float[] diff = {0, 0};
+		float[] diff = {0, 0, 0};
 		float slope = 0;
 		float perpSlope = 0;
 		float additionalPop = 0;
-		float multiplier = 0;
 		float tempAngle = 0;
 		boolean isVertical = false;
 		// Check which side of the line to push the point toward
@@ -150,9 +150,13 @@ public class Surface extends GraphicObject {
 				break;
 				
 			// If somehow the player was intersecting the surface before this check, print an error
+			// Also, mark this as an error so that the platform can know to return the player to their previous position
 			case ON:
 				System.out.println("ERROR, SOMEWHERE THERE WAS A VALID POSITION ON A LINE");
-				break;
+				diff[0] = 0;
+				diff[1] = 0;
+				diff[2] = -1;
+				return diff;
 		}
 		
 		// Calculates the amount which the point will get pushed out
