@@ -12,6 +12,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * A set of functions useful for outputting keyframes and reading in keyframe files.
+ * @author Steph and Thomas
+ *
+ */
 public class FileInOutMachine {
 
 	/**
