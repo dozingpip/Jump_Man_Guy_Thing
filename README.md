@@ -9,3 +9,5 @@ Controls:
 Things to Avoid:
 Do not to push the side of your character directly into the side of platform, it won't crash, but will not have the desired effect.
 Do not jump off the edge, you will fall for forever and not respawn.
+
+Created as the final project for Computer Graphics (CSC406) in Fall 2017 at the University of Rhode Island.
