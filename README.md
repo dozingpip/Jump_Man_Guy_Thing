@@ -1,5 +1,5 @@
 # Jump_Man_Guy_Thing
-[Download runnable jar](https://github.com/freestraws/Jump_Man_Guy_Thing/blob/master/jump.jar?raw=true)
+[Download runnable jar version](https://github.com/freestraws/Jump_Man_Guy_Thing/blob/master/jump.jar?raw=true)
 
     
 User Manual for Jump Man Guy Thing by Steph Donnelly and Thomas Clinton
