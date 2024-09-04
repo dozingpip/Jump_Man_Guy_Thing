@@ -1,4 +1,4 @@
-# Jump Man Guy Thing (by Steph Donnelly and Thomas Clinton)
+# Jump Man Guy Thing (by Pip Donnelly and Tiffany Clinton)
 
 
 Created as the final project for Computer Graphics (CSC406) in Fall 2017 at the University of Rhode Island.
