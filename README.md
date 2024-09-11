@@ -1,9 +1,11 @@
 # Jump Man Guy Thing (by Pip Donnelly and Tiffany Clinton)
 
 
-Created as the final project for Computer Graphics (CSC406) in Fall 2017 at the University of Rhode Island.
+Created as the final project for Computer Graphics (CSC406) in Fall 2017 at the University of Rhode Island. Written in Java, uses the [Processing](https://processing.org/) library
 
-[Download runnable jar version](https://github.com/freestraws/Jump_Man_Guy_Thing/blob/master/jump.jar?raw=true)
+[Download runnable jar version](https://github.com/dozingpip/Jump_Man_Guy_Thing/releases/download/1/runnable.zip)
+
+Use `java -jar jump.jar` to start it.
 
 **Controls**:
 
